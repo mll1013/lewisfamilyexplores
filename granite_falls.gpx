@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+  version="1.0"
+  creator="GPSBabel - http://www.gpsbabel.org"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.topografix.com/GPX/1/0"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+<time>2009-09-26T05:05:26Z</time>
+<bounds minlat="48.102027196" minlon="-121.958853090" maxlat="48.102670591" maxlon="-121.953853620"/>
+<trk>
+  <name>Granite Falls</name>
+<trkseg>
+<trkpt lat="48.102151165" lon="-121.954154195">
+  <ele>117.898804</ele>
+  <time>2009-09-19T19:41:56Z</time>
+</trkpt>
+<trkpt lat="48.102390133" lon="-121.954341363">
+  <ele>202.494873</ele>
+  <time>2009-09-19T19:42:04Z</time>
+</trkpt>
+<trkpt lat="48.102154098" lon="-121.954197362">
+  <ele>151.544922</ele>
+  <time>2009-09-19T19:42:20Z</time>
+</trkpt>
+<trkpt lat="48.102319976" lon="-121.953988736">
+  <ele>140.970459</ele>
+  <time>2009-09-19T19:42:50Z</time>
+</trkpt>
+<trkpt lat="48.102455428" lon="-121.953853620">
+  <ele>140.970459</ele>
+  <time>2009-09-19T19:43:35Z</time>
+</trkpt>
+<trkpt lat="48.102234984" lon="-121.955323219">
+  <ele>140.970459</ele>
+  <time>2009-09-19T19:44:44Z</time>
+</trkpt>
+<trkpt lat="48.102293406" lon="-121.955376361">
+  <ele>103.959717</ele>
+  <time>2009-09-19T19:44:56Z</time>
+</trkpt>
+<trkpt lat="48.102266835" lon="-121.955484487">
+  <ele>98.191895</ele>
+  <time>2009-09-19T19:45:05Z</time>
+</trkpt>
+<trkpt lat="48.102187961" lon="-121.955876173">
+  <ele>97.711182</ele>
+  <time>2009-09-19T19:45:28Z</time>
+</trkpt>
+<trkpt lat="48.102262812" lon="-121.956161410">
+  <ele>96.269287</ele>
+  <time>2009-09-19T19:46:02Z</time>
+</trkpt>
+<trkpt lat="48.102352833" lon="-121.956111370">
+  <ele>97.711182</ele>
+  <time>2009-09-19T19:46:35Z</time>
+</trkpt>
+<trkpt lat="48.102538744" lon="-121.956156883">
+  <ele>97.230469</ele>
+  <time>2009-09-19T19:47:23Z</time>
+</trkpt>
+<trkpt lat="48.102487782" lon="-121.956070047">
+  <ele>96.269287</ele>
+  <time>2009-09-19T19:55:45Z</time>
+</trkpt>
+<trkpt lat="48.102479149" lon="-121.956195859">
+  <ele>86.175293</ele>
+  <time>2009-09-19T19:55:58Z</time>
+</trkpt>
+<trkpt lat="48.102593562" lon="-121.956732888">
+  <ele>83.291382</ele>
+  <time>2009-09-19T19:56:34Z</time>
+</trkpt>
+<trkpt lat="48.102572942" lon="-121.956657367">
+  <ele>80.888184</ele>
+  <time>2009-09-19T19:56:57Z</time>
+</trkpt>
+<trkpt lat="48.102607643" lon="-121.956441365">
+  <ele>80.407471</ele>
+  <time>2009-09-19T19:57:38Z</time>
+</trkpt>
+<trkpt lat="48.102670591" lon="-121.957414672">
+  <ele>97.711182</ele>
+  <time>2009-09-19T20:01:35Z</time>
+</trkpt>
+<trkpt lat="48.102472778" lon="-121.957532689">
+  <ele>98.191895</ele>
+  <time>2009-09-19T20:01:57Z</time>
+</trkpt>
+<trkpt lat="48.102579145" lon="-121.958027724">
+  <ele>98.191895</ele>
+  <time>2009-09-19T20:02:37Z</time>
+</trkpt>
+<trkpt lat="48.102585096" lon="-121.958513372">
+  <ele>98.191895</ele>
+  <time>2009-09-19T20:03:15Z</time>
+</trkpt>
+<trkpt lat="48.102403544" lon="-121.958853090">
+  <ele>98.191895</ele>
+  <time>2009-09-19T20:03:46Z</time>
+</trkpt>
+<trkpt lat="48.102189386" lon="-121.958702635">
+  <ele>97.230469</ele>
+  <time>2009-09-19T20:04:21Z</time>
+</trkpt>
+<trkpt lat="48.102027196" lon="-121.958065862">
+  <ele>97.230469</ele>
+  <time>2009-09-19T20:05:40Z</time>
+</trkpt>
+<trkpt lat="48.102456015" lon="-121.957059195">
+  <ele>97.230469</ele>
+  <time>2009-09-19T20:06:27Z</time>
+</trkpt>
+<trkpt lat="48.102247473" lon="-121.955981199">
+  <ele>97.711182</ele>
+  <time>2009-09-19T20:07:16Z</time>
+</trkpt>
+<trkpt lat="48.102245042" lon="-121.955712140">
+  <ele>96.749878</ele>
+  <time>2009-09-19T20:07:50Z</time>
+</trkpt>
+<trkpt lat="48.102296675" lon="-121.955331098">
+  <ele>99.633789</ele>
+  <time>2009-09-19T20:08:24Z</time>
+</trkpt>
+<trkpt lat="48.102324503" lon="-121.954866825">
+  <ele>102.517700</ele>
+  <time>2009-09-19T20:09:08Z</time>
+</trkpt>
+<trkpt lat="48.102273205" lon="-121.954684267">
+  <ele>107.324341</ele>
+  <time>2009-09-19T20:09:32Z</time>
+</trkpt>
+<trkpt lat="48.102239929" lon="-121.954537416">
+  <ele>103.959717</ele>
+  <time>2009-09-19T20:09:54Z</time>
+</trkpt>
+<trkpt lat="48.102301201" lon="-121.954473043">
+  <ele>101.556396</ele>
+  <time>2009-09-19T20:10:17Z</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+	<head>
+		<base target="_top">
+		<title></title>
+	</head>
+	<body onload="GV_Map();" onunload="GUnload();" >
+		
+		<!--
+			If you want to transplant this map into another Web page, there are a number of pieces
+			you need to copy, and it is important that some things are placed in a particular order:
+			   1. The DOCTYPE declaration and the extra attributes in the "html" tag (xmlns:v=...)
+			     that allow Internet Explorer for Windows to render polylines
+			   2. The onload="GV_Map();" attribute in the "body" tag 
+			   3. The "div" tags that contain the map and its widgets
+			   4. JavaScript stuff:
+			      a. The GPS Visualizer global variables (they begin with var = gv_...)
+			      b. The "script" tag that points to maps.google.com (you must insert your own API key!)
+			      c. The "script" tag that points to www.gpsvisualizer.com
+			      d. The JavaScript commands that actually build the map (function GV_Map())
+		-->
+		
+
+		<!-- If you want to place the map in a page, you can set its margins here: -->
+		<div style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">
+			<div style="width:600px; height:600px; margin:0px; padding:0px; float:left; overflow:hidden;">
+				
+				<div id="gmap_div" style="width:600px; height:600px;"></div>
+				
+				<div id="gv_credit_container" style="display:none;">
+					<table style="filter:alpha(opacity=80); -moz-opacity:0.8;" cellspacing="0" cellpadding="0" border="0"><tr><td><div id="gv_credit" style="background-color:#FFFFFF; border:none; padding:1px; font:10px Verdana,sans-serif;"><b>Map created by <a target="_top" href="http://www.gpsvisualizer.com/">GPSVisualizer.com</a></b></div></td></tr></table>
+				</div>
+				<div id="gv_crosshair_container" style="display:none;" class="gmnoprint">
+					<div id="gv_crosshair" align="center" style="width:15px; height:15px; display:block;"><img src="http://www.gpsvisualizer.com/google_maps/crosshair.gif" alt="" width="15" height="15"></div>
+				</div>
+				<div id="gv_center_container" style="display:none;">
+					<table style="cursor:crosshair; filter:alpha(opacity=80); -moz-opacity:0.80;" cellspacing="0" cellpadding="0" border="0"><tr><td><div id="gv_center_coordinates" style="background-color:#FFFFFF; border:solid #666666 1px; padding:1px; font-family:Arial; font-size:10px; line-height:11px;" class="gmnoprint" onClick="GV_Toggle('gv_crosshair');" title="Click here to turn center crosshair on or off"></div></td></tr></table>
+				</div>
+
+				<div id="gv_legend_container" style="display:none;">
+					<table id="gv_legend" style="position:relative; top:0px; cursor:move; filter:alpha(opacity=95); -moz-opacity:0.95;" cellpadding="0" cellspacing="0" border="0"><tr><td>
+						<div id="gv_legend_contents" align="left" style="font-family:Arial; font-size:11px; font-weight:bold; border:solid #000000 1px; background:white; padding:4px; position:relative;">
+						<span style="color:#000000;">Tracks:</span>
+						<br><span id="trk1_label" style="color:#E600E6; cursor:pointer;" onclick="GV_Toggle_Track_And_Label(gmap,'trk1','#E600E6');" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';" title="">- Yankee Fork Drive</span>
+					</div>
+					</td></tr></table>
+				</div>
+				<div id="gv_legend_tooltip" class="gv_legend_tooltip" style="width:200px; background-color:#FFFFFF; border-width:1px; border-style:solid; border-color:#CCCCCC; padding:2px; font-family:Arial; font-size:11px;"></div>
+
+			</div>
+			<div id="gv_marker_list" align="left" class="gv_marker_list" style="width:160px; height:600px; margin-left:12px; overflow:auto; display:none;"></div>
+			<div style="height:0px; clear:both;"><!-- clear the "float" --></div>
+		</div>
+
+		
+		<script type="text/javascript">
+			/* Global variables used by the GPS Visualizer functions (1177817844): */
+			var gv_maptypecontrol_style = 'menu';
+			var gv_filter_map_types = true;
+			// var gv_excluded_map_types = ['USGS_TOPO_TILES','USGS_AERIAL_TILES','NRCAN_TOPO_TILES','NRCAN_TOPO_NAMES_TILES','BLUEMARBLE_TILES','DAILY_TERRA_TILES','DAILY_AQUA_TILES'];
+			var gv_default_marker = {color:'red',icon:'googlemini'}; // icon can be a URL, but be sure to include size:[w,h]
+			var gv_icon_directory = 'http://maps.gpsvisualizer.com/google_maps/icons/';
+			var gv_marker_link_target = '_blank';
+			var gv_driving_directions = false;
+			var gv_marker_filter_options = {filter:false,limit:0,update_list:true,sort_list_by_distance:false};
+			var gv_marker_list_options = {list:false,map:'gmap',array:'wpts',colors:false,default_color:'#000000',icons:true,desc:false,thumbnails:false,toggle:false,center:false,zoom:false,info_window:true,url_links:false,wrap_names:false};
+			
+		</script>
+		<script src="http://maps.google.com/maps?v=2&file=api&key=ABQIAAAAR_W8Y6IbhBzE8EwmWGi0cRRK9eFURR_MnJwdL3N8EUvYeB1HUhTCmvrcKsB-QqsAvHGRdvIHgh6FOw" type="text/javascript"></script>
+		<script src="http://maps.gpsvisualizer.com/google_maps/functions.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		function GV_Map() {
+			if (GBrowserIsCompatible()) { 
+				gmap = new GMap2(document.getElementById("gmap_div")); // create map
+				_mSvgEnabled = true; _mSvgForced = true;
+				var initial_zoom_level = 12; // higher number means closer view; at 600px wide, 7 = width of New Mexico, 12 = San Francisco
+				gmap.setCenter(new GLatLng(44.321702,-114.7253985), initial_zoom_level, G_HYBRID_MAP);
+				gmap.addControl(new GLargeMapControl());
+				gmap.addControl(new GScaleControl());
+				gmap.addControl(gv_maptypecontrol = new GV_MapTypeControl()); // add custom map type switcher
+				GV_Place_Control(gmap,'gv_credit_container',G_ANCHOR_BOTTOM_RIGHT,6,18);
+				GV_Place_Control(gmap,'gv_center_container',G_ANCHOR_BOTTOM_LEFT,4,40);
+				GV_Place_Control(gmap,'gv_legend_container',G_ANCHOR_TOP_RIGHT,6,32); Drag.init(document.getElementById("gv_legend"));
+				GV_Setup_Crosshair(gmap,{crosshair_container_id:'gv_crosshair_container',crosshair_graphic_id:'gv_crosshair',crosshair_width:15,center_coordinates_id:'gv_center_coordinates',fullscreen:false});
+				
+				// GEvent.addDomListener(document.getElementById('gmap_div'),"DOMMouseScroll", GV_MouseWheel); // mouse-wheel scrolling for Firefox
+				// GEvent.addDomListener(document.getElementById('gmap_div'),"mousewheel", GV_MouseWheel); // mouse-wheel scrolling for IE
+				
+				GEvent.addListener(gmap, "moveend", function() { GV_Filter_Tracks(gmap,trk_info); });
+				
+				trk_info = new Array();
+				
+				// Draw track #1 ("Yankee Fork Drive")
+				trk1 = new Array();
+				// track 1 segment 1:
+				var pts1_1 = [
+					new GLatLng(44.270819,-114.734701),
+					new GLatLng(44.270945,-114.734409),
+					new GLatLng(44.271299,-114.733903),
+					new GLatLng(44.271774,-114.733793),
+					new GLatLng(44.272314,-114.733927),
+					new GLatLng(44.272444,-114.734104),
+					new GLatLng(44.272843,-114.734604),
+					new GLatLng(44.273203,-114.734746),
+					new GLatLng(44.273506,-114.734738),
+					new GLatLng(44.275374,-114.734517),
+					new GLatLng(44.276979,-114.735194),
+					new GLatLng(44.277089,-114.735259),
+					new GLatLng(44.277633,-114.735154),
+					new GLatLng(44.279088,-114.734227),
+					new GLatLng(44.281396,-114.732858),
+					new GLatLng(44.281944,-114.732469),
+					new GLatLng(44.282294,-114.73202),
+					new GLatLng(44.282515,-114.731492),
+					new GLatLng(44.282757,-114.730464),
+					new GLatLng(44.28325,-114.728272),
+					new GLatLng(44.283818,-114.726798),
+					new GLatLng(44.284188,-114.726473),
+					new GLatLng(44.284733,-114.726405),
+					new GLatLng(44.28496,-114.72648),
+					new GLatLng(44.286014,-114.727287),
+					new GLatLng(44.286629,-114.727255),
+					new GLatLng(44.287426,-114.72688),
+					new GLatLng(44.28767,-114.726547),
+					new GLatLng(44.287739,-114.726233),
+					new GLatLng(44.287389,-114.724679),
+					new GLatLng(44.287222,-114.724151),
+					new GLatLng(44.287339,-114.722689),
+					new GLatLng(44.287396,-114.721152),
+					new GLatLng(44.287484,-114.720598),
+					new GLatLng(44.287709,-114.72014),
+					new GLatLng(44.288221,-114.719941),
+					new GLatLng(44.2895,-114.720018),
+					new GLatLng(44.29034,-114.718665),
+					new GLatLng(44.291663,-114.717269),
+					new GLatLng(44.292259,-114.71672),
+					new GLatLng(44.293854,-114.715889),
+					new GLatLng(44.293993,-114.715837),
+					new GLatLng(44.295186,-114.715538),
+					new GLatLng(44.295654,-114.715674),
+					new GLatLng(44.295842,-114.71584),
+					new GLatLng(44.29642,-114.716224),
+					new GLatLng(44.297773,-114.717769),
+					new GLatLng(44.298318,-114.718721),
+					new GLatLng(44.299216,-114.720998),
+					new GLatLng(44.299476,-114.721458),
+					new GLatLng(44.300131,-114.721888),
+					new GLatLng(44.301016,-114.721827),
+					new GLatLng(44.302446,-114.720702),
+					new GLatLng(44.303698,-114.720071),
+					new GLatLng(44.305379,-114.719481),
+					new GLatLng(44.307296,-114.718918),
+					new GLatLng(44.307745,-114.718744),
+					new GLatLng(44.307751,-114.718742),
+					new GLatLng(44.308019,-114.718647),
+					new GLatLng(44.308789,-114.71812),
+					new GLatLng(44.310163,-114.71726),
+					new GLatLng(44.311785,-114.716796),
+					new GLatLng(44.314506,-114.716109),
+					new GLatLng(44.31627,-114.715938),
+					new GLatLng(44.317779,-114.716423),
+					new GLatLng(44.319998,-114.717721),
+					new GLatLng(44.322202,-114.718926),
+					new GLatLng(44.324156,-114.719783),
+					new GLatLng(44.326548,-114.720962),
+					new GLatLng(44.327799,-114.721558),
+					new GLatLng(44.329285,-114.721529),
+					new GLatLng(44.331099,-114.720933),
+					new GLatLng(44.332807,-114.720971),
+					new GLatLng(44.335118,-114.721476),
+					new GLatLng(44.337019,-114.721886),
+					new GLatLng(44.338643,-114.722258),
+					new GLatLng(44.340024,-114.722579),
+					new GLatLng(44.341484,-114.723186),
+					new GLatLng(44.343388,-114.724098),
+					new GLatLng(44.344804,-114.724485),
+					new GLatLng(44.34633,-114.724768),
+					new GLatLng(44.347982,-114.725096),
+					new GLatLng(44.349575,-114.725421),
+					new GLatLng(44.351441,-114.725812),
+					new GLatLng(44.353728,-114.726311),
+					new GLatLng(44.355417,-114.726646),
+					new GLatLng(44.356866,-114.726657),
+					new GLatLng(44.359362,-114.726442),
+					new GLatLng(44.359954,-114.726392),
+					new GLatLng(44.361617,-114.726243),
+					new GLatLng(44.363051,-114.726421),
+					new GLatLng(44.365065,-114.726685),
+					new GLatLng(44.365325,-114.726602),
+					new GLatLng(44.366764,-114.725473),
+					new GLatLng(44.367391,-114.724928),
+					new GLatLng(44.368218,-114.724909),
+					new GLatLng(44.368398,-114.725062),
+					new GLatLng(44.369607,-114.726166),
+					new GLatLng(44.371033,-114.726825),
+					new GLatLng(44.371999,-114.726975),
+					new GLatLng(44.372246,-114.727118),
+					new GLatLng(44.372414,-114.727321),
+					new GLatLng(44.37257,-114.72721),
+					new GLatLng(44.372585,-114.727211)
+				];
+				trk1.push (new GPolyline(pts1_1,"#E600E6",3,0.8));
+				gmap.addOverlay(trk1[trk1.length-1]);
+				trk_info['trk1'] = { w:-114.735259,e:-114.715538,s:44.270819,n:44.372585 };
+				
+				wpts = new Array();
+				
+			} else {
+				document.getElementById('gmap_div').style.backgroundColor = '#DDDDDD';
+				document.getElementById('gmap_div').innerHTML = 'Sorry, your Google Map cannot be displayed.';
+			}
+		}
+		</script>
+		
+		
+	</body>
+
+</html>

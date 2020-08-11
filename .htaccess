@@ -1,0 +1,3 @@
+<FilesMatch "\.(html|htm)$">
+ForceType application/x-httpd-lsphp
+</FilesMatch>

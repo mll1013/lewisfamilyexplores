@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+	<head>
+		<title>Map created by GPS Visualizer</title>
+		<base target="_top"></base>
+		<meta name="geo.position" content="45.5189396; -122.7068534" />
+		<meta name="ICBM" content="45.5189396, -122.7068534" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body onunload="GUnload();" style="margin:0px;">
+		<script type="text/javascript">
+			// If you put this map on another Web site, you must include your API key
+			var google_api_key = ''; // Your key goes on THIS line; the following line ("if window.location.host...") can be removed.
+			if (window.location.host == 'www.gpsvisualizer.com') { google_api_key = 'ABQIAAAAR_W8Y6IbhBzE8EwmWGi0cRRK9eFURR_MnJwdL3N8EUvYeB1HUhTCmvrcKsB-QqsAvHGRdvIHgh6FOw'; }			
+			document.writeln('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key='+(self.google_api_key?google_api_key:'')+'" type="text/javascript"><'+'/'+'script>');
+		</script>
+		
+		<!--
+			If you want to transplant this map into another Web page, by far the best method is to
+			simply include it in a IFRAME tag (see http://www.gpsvisualizer.com/faq.html#google_html).
+			But, if you must paste the code into another page, be sure to include all of these parts:
+			   1. The DOCTYPE declaration and the extra attributes in the "html" tag (xmlns:v=...)
+			     that allow Internet Explorer for Windows to render polylines (tracks)
+			   2. The "div" tags that contain the map and its widgets (below this comment)
+			   3. Three sections of JavaScript code:
+			      a. Your Google Maps API key and the maps.google.com code (above this comment)
+			      b. "gv_options" and the code that calls "functions.js" on maps.gpsvisualizer.com
+			      c. The "GV_Map" function, which contains all the geographic info for the map
+		-->
+		<div style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">
+			<div id="gmap_div" style="width:700px; height:462px; margin:0px; margin-right:12px; background-color:#F0F0F0; float:left; overflow:hidden;">
+				<p align="center" style="font:10px Arial;">This map was created using <a target="_blank" href="http://www.gpsvisualizer.com/">GPS Visualizer</a>'s do-it-yourself geographic utilities.<br /><br />Please wait while the map data loads...</p>
+			</div>
+				
+			<div id="gv_legend_container" style="display:none;"><table id="gv_legend_table" style="position:relative; filter:alpha(opacity=95); -moz-opacity:0.95; opacity:0.95; background:#ffffff;" cellpadding="0" cellspacing="0" border="0"><tr><td><div id="gv_legend_handle" align="center" style="height:6px; max-height:6px; background:#CCCCCC; border-left:1px solid #999999; border-top:1px solid #EEEEEE; border-right:1px solid #999999; padding:0px; cursor:move;"><!-- --></div>
+				<div id="gv_legend" align="left" style="line-height:13px; border:solid #000000 1px; background:#FFFFFF; padding:4px;max-width:400px; font:11px Arial; ">
+					<!-- Although GPS Visualizer didn't create a legend with your map, you can use this box for something else if you'd like; enable it by setting gv_options.legend_options.legend to true -->
+				</div>
+			</td></tr></table></div>
+
+
+			<div id="gv_tracklist_container" style="display:none;"><table id="gv_tracklist_table" style="position:relative; filter:alpha(opacity=95); -moz-opacity:0.95; opacity:0.95;" cellpadding="0" cellspacing="0" border="0"><tr><td><div id="gv_tracklist_handle" align="center" style="height:6px; max-height:6px; background:#CCCCCC; border-left:1px solid #999999; border-top:1px solid #EEEEEE; border-right:1px solid #999999; padding:0px; cursor:move; min-width:40px;"><!-- --></div>
+				<div id="gv_tracklist" align="left" style="font:11px Arial; line-height:11px; border:solid #666666 1px; background:#FFFFFF; padding:4px; overflow:auto;">
+					<div id="gv_tracklist_header" style="padding-bottom:2px; color:#000000;"><b>Tracks:</b></div>
+					<div id="gv_tracklist_links" style="color:#000000;"></div>
+				</div>
+			</td></tr></table></div>
+			<div id="gv_tracklist_tooltip" class="gv_tracklist_tooltip" style="background-color:#FFFFFF; border:1px solid #CCCCCC; padding:2px; font:11px Arial; display:none;"></div>
+
+			<div id="gv_clear_margins" style="height:0px; clear:both;"><!-- clear the "float" --></div>
+		</div>
+
+		
+		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
+		<script type="text/javascript">
+			/* Global variables used by the GPS Visualizer functions (1342237037): */
+			gv_options = [];
+				// important variable names:
+				gv_options.map_div = 'gmap_div';  // the name of the HTML "div" tag containing the map itself; usually 'gmap_div'
+				
+				// basic map parameters:
+				gv_options.width = 700;  // width of the map, in pixels
+				gv_options.height = 462;  // height of the map, in pixels
+				gv_options.full_screen = false;  // true|false: should the map fill the entire page (or frame)?
+				gv_options.center = [45.518939550966,-122.706853374839];  // [latitude,longitude] - be sure to keep the square brackets
+				gv_options.zoom = 17;  // higher number means closer view; can also be 'auto'
+				gv_options.map_opacity = 1;  // number from 0 to 1
+				gv_options.map_type = 'G_HYBRID_MAP';  // popular map_type choices are 'GV_STREET', 'GV_SATELLITE', 'GV_HYBRID', 'GV_TERRAIN', 'GV_TOPO_US', 'GV_TOPO_WORLD', 'GV_OSM'
+				gv_options.doubleclick_zoom = true;  // true|false: zoom in when mouse is double-clicked?
+				gv_options.mousewheel_zoom = false; // true|false; or 'reverse' for down=in and up=out
+				gv_options.centering_options = { 'open_info_window':true, 'partial_match':true, 'center_key':'center', 'default_zoom':null } // URL-based centering (e.g., ?center=name_of_marker&zoom=14)
+				
+				// widgets on the map:
+				gv_options.zoom_control = 'large'; // 'large'|'small'|'3d'|'none'
+				gv_options.scale_control = true; // true|false
+				gv_options.center_coordinates = true;  // true|false: show a "center coordinates" box and crosshair?
+				gv_options.crosshair_hidden = true;  // true|false: hide the crosshair initially?
+				gv_options.map_opacity_control = true;  // true|false
+				gv_options.map_type_control = [];  // widget to change the background map
+				  gv_options.map_type_control.style = 'menu';  // 'menu'|'list'|'none'|'google'
+				  gv_options.map_type_control.filter = true;  // true|false: when map loads, are irrelevant maps ignored?
+				  gv_options.map_type_control.excluded = ['G_SATELLITE_3D_MAP'];  // comma-separated list of map types that will never show in the list ('included' also works)
+				gv_options.legend_options = []; // options for a floating legend box (id="gv_legend"), which can contain anything
+				  gv_options.legend_options.legend = true;  // true|false: enable or disable the legend altogether
+				  gv_options.legend_options.position = ['G_ANCHOR_TOP_LEFT',70,6];  // [Google anchor name, relative x, relative y]
+				  gv_options.legend_options.draggable = true;  // true|false: can it be moved around the screen?
+				  gv_options.legend_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
+				gv_options.measurement_tools = { visible:false, distance_color:'', area_color:'', position:[] };
+
+				// track-related options:
+				gv_options.tracklist_options = []; // options for a floating list of the tracks visible on the map
+				  gv_options.tracklist_options.tracklist = true;  // true|false: enable or disable the tracklist altogether
+				  gv_options.tracklist_options.position = ['G_ANCHOR_TOP_RIGHT',6,32];  // [Google anchor name, relative x, relative y]
+				  gv_options.tracklist_options.max_width = 180; // maximum width of the tracklist, in pixels
+				  gv_options.tracklist_options.max_height = 372; // maximum height of the tracklist, in pixels; if the list is longer, scrollbars will appear
+				  gv_options.tracklist_options.desc = true;  // true|false: should tracks' descriptions be shown in the list
+				  gv_options.tracklist_options.zoom_links = true;  // true|false: should each item include a small icon that will zoom to that track?
+				  gv_options.tracklist_options.tooltips = true;  // true|false: should the name of the track appear on the map when you mouse over the name in the list?
+				  gv_options.tracklist_options.draggable = true;  // true|false: can it be moved around the screen?
+				  gv_options.tracklist_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
+
+				// marker-related options:
+				gv_options.default_marker = { color:'red',icon:'googlemini' }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
+				gv_options.shadows = true; // true|false: do the standard markers have "shadows" behind them?
+				gv_options.marker_link_target = '_blank'; // the name of the window or frame into which markers' URLs will load
+				gv_options.info_window_width = 0;  // in pixels, the width of the markers' pop-up info "bubbles" (can be overridden by 'window_width' in individual markers)
+				gv_options.thumbnail_width = 0;  // in pixels, the width of the markers' thumbnails (can be overridden by 'thumbnail_width' in individual markers)
+				gv_options.photo_size = [0,0];  // in pixels, the size of the photos in info windows (can be overridden by 'photo_width' or 'photo_size' in individual markers)
+				gv_options.hide_labels = false;  // true|false: hide labels when map first loads?
+				gv_options.label_offset = [0,0];  // [x,y]: shift all markers' labels (positive numbers are right and down)
+				gv_options.label_centered = false;  // true|false: center labels with respect to their markers?  (label_left is also a valid option.)
+				gv_options.driving_directions = false;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
+				gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
+				
+			
+			// Load GPS Visualizer's Google Maps functions (this must be loaded AFTER gv_options are set):
+			document.writeln('<script src="http://maps.gpsvisualizer.com/google_maps/functions.js" type="text/javascript"><'+'/'+'script>');
+		</script>
+		
+		<style type="text/css">
+			/* Put any custom style definitions here (e.g., .gv_marker_info_window, .gv_marker_list_item, .gv_tooltip, .gv_label, etc.) */
+			.gv_label {
+				filter:alpha(opacity=80); -moz-opacity:0.8; opacity:0.8;
+				background:#333333; border:1px solid black; padding:1px;
+				font:9px Verdana,sans-serif; color:white; font-weight:normal;
+			}
+			
+		</style>
+		
+		<!-- end GPSV setup script and styles; begin map-drawing script (they must be separate) -->
+		<script type="text/javascript">
+			function GV_Map() {
+				if (GBrowserIsCompatible()) { 
+					if (gv_options.full_screen) { GV_Fill_Window_With_Map(gv_options.map_div); }
+					gmap = new GMap2(document.getElementById(gv_options.map_div)); // create map
+					GV_Setup_Map(gv_options);
+					
+					// Track #1 ("International Test Rose Garden")
+					t = 1; trk_info[t] = [];
+					trk_info[t]['name'] = 'International Test Rose Garden'; trk_info[t]['desc'] = ''; trk_info[t]['clickable'] = true;
+					trk_info[t]['color'] = '#E60000'; trk_info[t]['width'] = 3; trk_info[t]['opacity'] = 0.9;
+					trk_info[t]['outline_color'] = '#000000'; trk_info[t]['outline_width'] = 0; trk_info[t]['fill_color'] = '#E60000'; trk_info[t]['fill_opacity'] = 0;
+					trk_segments[t] = [];
+					trk_segments[t].push({ points:[ [45.519314724952,-122.707307087258],[45.5192871484905,-122.707053283229],[45.5193177424371,-122.706949096173],[45.5193900782615,-122.707071555778],[45.5193990468979,-122.707045236602],[45.5193853843957,-122.707024030387],[45.519396783784,-122.707020426169],[45.519306762144,-122.706845328212],[45.519156223163,-122.706678612158],[45.5191108770669,-122.706535449252],[45.5191261321306,-122.706487337127],[45.5191275570542,-122.706478117034],[45.5191179178655,-122.706304695457],[45.519105931744,-122.706209728494],[45.5191038362682,-122.706118533388],[45.5191373638809,-122.705905046314],[45.5191355198622,-122.705895826221],[45.5191757529974,-122.705841008574],[45.5192254576832,-122.70582315512],[45.5191639345139,-122.705885684118],[45.5191884096712,-122.705761464313],[45.5191491823643,-122.705737575889],[45.5191533733159,-122.705760877579],[45.5191701371223,-122.705855760723],[45.5191610008478,-122.705781748518],[45.5191417224705,-122.705696085468],[45.5191594082862,-122.705702204257],[45.5191924329847,-122.705675633624],[45.5191835481673,-122.705717207864],[45.5191291496158,-122.705711424351],[45.5191133916378,-122.705794405192],[45.519111379981,-122.705801613629],[45.5191196780652,-122.705779150128],[45.5191993061453,-122.705662474036],[45.5191987194121,-122.705691223964],[45.5191725678742,-122.705828854814],[45.5191990546882,-122.705771857873],[45.5191723164171,-122.705763643607],[45.5191714782268,-122.705763727427],[45.5191713105887,-122.705762134865],[45.5191740766168,-122.705758279189],[45.5191829614341,-122.705758446828],[45.5191854760051,-122.705754255876],[45.5191926006228,-122.705751741305],[45.5191834643483,-122.705819299445],[45.5191856436431,-122.705834638327],[45.5191775970161,-122.705744784325],[45.5191941093653,-122.705746628344],[45.5191868171096,-122.705778731033],[45.5191792733967,-122.705784095451],[45.5191722325981,-122.705883421004],[45.519174830988,-122.705797087401],[45.51917466335,-122.705793147907],[45.5191755015403,-122.705794237554],[45.5191786866635,-122.705764481798],[45.5191805306822,-122.705755513161],[45.5191806983203,-122.705756938085],[45.5191810335964,-122.705757943913],[45.5191815365106,-122.705751825124],[45.5191988870502,-122.705727769062],[45.5192951112986,-122.705729026347],[45.5193192511797,-122.705740761012],[45.5193704646081,-122.705730702728],[45.5193813610822,-122.705722488463],[45.5194572173059,-122.705668257549],[45.5195743124932,-122.705652248114],[45.51961873658,-122.705654008314],[45.5197065789253,-122.705678986385],[45.5197848659009,-122.70566213876],[45.5198481492698,-122.705618971959],[45.5198551062495,-122.705622995272],[45.5199207365513,-122.705562142655],[45.5199125222862,-122.705563819036],[45.5197849497199,-122.705532973632],[45.5196282081306,-122.705597179011],[45.5196079239249,-122.70566389896],[45.5196007993072,-122.705634562299],[45.5195468198508,-122.705635568127],[45.5194172356278,-122.705574464053],[45.5193606577814,-122.705569854006],[45.5193044152111,-122.705559795722],[45.5192124657333,-122.705586785451],[45.5192133039236,-122.705588964745],[45.5191024951637,-122.70560413599],[45.5190634354949,-122.705607069656],[45.5190632678568,-122.705634310842],[45.5190601665527,-122.705650487915],[45.5190623458475,-122.705650404096],[45.5189987272024,-122.705604052171],[45.5189822148532,-122.705519981682],[45.5189402215183,-122.705532889813],[45.5189185123891,-122.70553666167],[45.5188264790922,-122.705557951704],[45.518749114126,-122.705467930064],[45.5187504552305,-122.705425266176],[45.518751712516,-122.705412274227],[45.5187954660505,-122.705412274227],[45.5187933705747,-122.705333568156],[45.5188168399036,-122.705275146291],[45.5189275648445,-122.70514623262],[45.5189941171557,-122.705116476864],[45.5190050136298,-122.705160817131],[45.5190204363316,-122.705173222348],[45.5190434865654,-122.705178083852],[45.5190574005246,-122.705146064982],[45.5190786905587,-122.705116225407],[45.5190481804311,-122.705083535984],[45.5190069414675,-122.705067023635],[45.5189478490502,-122.704960154369],[45.5189508665353,-122.704957136884],[45.5189584102482,-122.70494364202],[45.5190708115697,-122.704895278439],[45.5191302392632,-122.704760245979],[45.5191723164171,-122.704736273736],[45.5191921815276,-122.704709703103],[45.5191969592124,-122.704692939296],[45.5191380344331,-122.704556565732],[45.5191412195563,-122.704569641501],[45.5190734937787,-122.704572239891],[45.5190368648618,-122.704589841887],[45.5189864058048,-122.704600151628],[45.5189702287316,-122.704592105001],[45.5190463364124,-122.704621776938],[45.5190608371049,-122.70464499481],[45.5190467555076,-122.704682545736],[45.5190284829587,-122.70469000563],[45.5190259683877,-122.704691262916],[45.5188803747296,-122.70480777137],[45.518714748323,-122.704842640087],[45.5185369681567,-122.704870551825],[45.5184405762702,-122.705056127161],[45.5184580944479,-122.705212282017],[45.5185241438448,-122.705272128806],[45.5185753572732,-122.705269530416],[45.5186766944826,-122.705202307552],[45.5186935421079,-122.705190991983],[45.5187083780766,-122.705196104944],[45.5187323503196,-122.705209348351],[45.5188785307109,-122.705436917022],[45.5190251301974,-122.705567590892],[45.5190966278315,-122.705649565905],[45.5191028304398,-122.705652248114],[45.5191019084305,-122.705657025799],[45.5191035848111,-122.705656355247],[45.5191089492291,-122.705678148195],[45.5191097874194,-122.705673119053],[45.5191223602742,-122.705691223964],[45.5191490147263,-122.706045778468],[45.5191506072879,-122.706106044352],[45.5191862303764,-122.706410810351],[45.5191989708692,-122.706473171711],[45.5192419700325,-122.706751702353],[45.5192913394421,-122.706946665421],[45.5193936824799,-122.70708438009],[45.5193990468979,-122.707168115303],[45.5194068420678,-122.707207258791],[45.5194254498929,-122.707250090316],[45.519399214536,-122.707260064781],[45.5193944368511,-122.70726534538],[45.5192173272371,-122.707090079784] ] }); // track 1 segment 1
+					GV_Draw_Track(t);
+					
+					// Track #2 ("Japanese Gardens")
+					t = 2; trk_info[t] = [];
+					trk_info[t]['name'] = 'Japanese Gardens'; trk_info[t]['desc'] = ''; trk_info[t]['clickable'] = true;
+					trk_info[t]['color'] = '#00E675'; trk_info[t]['width'] = 3; trk_info[t]['opacity'] = 0.9;
+					trk_info[t]['outline_color'] = '#000000'; trk_info[t]['outline_width'] = 0; trk_info[t]['fill_color'] = '#00E675'; trk_info[t]['fill_opacity'] = 0;
+					trk_segments[t] = [];
+					trk_segments[t].push({ points:[ [45.5189734138548,-122.708498658612],[45.5189052689821,-122.708424143493],[45.5188423208892,-122.708427747712],[45.5188027583063,-122.708431603387],[45.5187936220318,-122.708432273939],[45.5188224557787,-122.708199676126],[45.5188015010208,-122.708176793531],[45.5187099706382,-122.708314843476],[45.518646016717,-122.708235131577],[45.5184995010495,-122.708171261474],[45.5183705035597,-122.708391789347],[45.5183274205774,-122.708387598395],[45.5184383131564,-122.708570659161],[45.5184129998088,-122.70860963501],[45.5183583498001,-122.708793282509],[45.5184264946729,-122.708853296936],[45.5186821427196,-122.708991263062],[45.518683064729,-122.708986820653],[45.5186834000051,-122.708991682157],[45.5186994094402,-122.709019593894],[45.5186916142702,-122.709117745981],[45.5186470225453,-122.709067286924],[45.5186468549073,-122.709065610543],[45.5186299234629,-122.709015151486],[45.5186338629574,-122.709012050182],[45.5185814760625,-122.708966033533],[45.5184008460492,-122.708980701864],[45.5183855071664,-122.709011044353],[45.5182774644345,-122.709052199498],[45.5182121694088,-122.709080949426],[45.5181547533721,-122.709119003266],[45.5181514844298,-122.709150183946],[45.5181779712439,-122.709046583623],[45.5181726906449,-122.709039961919],[45.5180810764432,-122.708973493427],[45.5179583653808,-122.708704182878],[45.5179655738175,-122.708632014692],[45.5179675854743,-122.708632098511],[45.5180697608739,-122.708594296128],[45.5180898774415,-122.708451636136],[45.5181596986949,-122.708268910646],[45.5181373190135,-122.708202106878],[45.5182239040732,-122.70831358619],[45.5182362254709,-122.708290116861],[45.5182406678796,-122.708139577881],[45.5181586928666,-122.707843696699],[45.5181084852666,-122.70777605474],[45.5181062221527,-122.707782341167],[45.5180651508272,-122.707662982866],[45.518067413941,-122.70766348578],[45.5180742871016,-122.707640770823],[45.5180624686182,-122.707570195198],[45.5180366523564,-122.707497607917],[45.5180075671524,-122.70746961236],[45.5180177930743,-122.707247240469],[45.5180433578789,-122.707186806947],[45.5181200522929,-122.707306249067],[45.5181501433253,-122.707322929054],[45.5181585252285,-122.707341704518],[45.5182606168091,-122.707460979],[45.5182389076799,-122.70744103007],[45.5183895304799,-122.707406748086],[45.5186108127236,-122.707371963188],[45.5185782909393,-122.707278840244],[45.5185611080378,-122.707302393392],[45.5184887722135,-122.707453938201],[45.5185032729059,-122.707449495792],[45.5185861699283,-122.707499200478],[45.518405539915,-122.707419572398],[45.5183984991163,-122.707416471094],[45.5183586012572,-122.707552006468],[45.5184152629226,-122.707666335627],[45.5183906201273,-122.707836739719],[45.5184243991971,-122.707716207951],[45.5184631235898,-122.70759601146],[45.5184808094054,-122.707613110542],[45.5185125768185,-122.707578325644],[45.5185161810368,-122.707532476634],[45.5185621976852,-122.707509761676],[45.5186253972352,-122.707500290126],[45.5186654627323,-122.707452178001],[45.5186294205487,-122.707519149408],[45.518551049754,-122.707514455542],[45.5184745229781,-122.707573045045],[45.5185303464532,-122.707706652582],[45.5185419134796,-122.70771109499],[45.5185421649367,-122.707710508257],[45.5189795326442,-122.707682680339],[45.5189232900739,-122.707510348409],[45.5187737569213,-122.70738914609],[45.5188425723463,-122.707487884909],[45.5188360344619,-122.707520993426],[45.518815331161,-122.70774403587],[45.5187964718789,-122.7078366559],[45.5187705717981,-122.708108061925],[45.5187673028558,-122.708232868463],[45.5187044385821,-122.708309730515],[45.5185740999877,-122.708298582584],[45.5184092279524,-122.708431854844],[45.5182473734021,-122.708367146552],[45.5181560944766,-122.708422550932],[45.5181912984699,-122.708566552028],[45.5182283464819,-122.708825133741],[45.5183749459684,-122.708896799013],[45.5184384807944,-122.708948850632],[45.5184694938362,-122.709036190063],[45.518450550735,-122.709042392671],[45.5185525584966,-122.70902780816],[45.518558844924,-122.709033759311],[45.5186679773033,-122.708911048248],[45.5187111441046,-122.708698147908],[45.5187108088285,-122.708688760176],[45.5187165085226,-122.708667386323],[45.5187373794615,-122.70837251097],[45.5187683086842,-122.708209650591],[45.5187789537013,-122.708297660574],[45.5187901854515,-122.708313083276],[45.5188963003457,-122.7083387319],[45.5190051812679,-122.70808333531],[45.5190605018288,-122.707722075284],[45.5190428160131,-122.707577152178],[45.5192438978702,-122.707700198516],[45.5192837957293,-122.707934891805],[45.5193210951984,-122.707801284268],[45.5194010585546,-122.70755527541] ] }); // track 2 segment 1
+					GV_Draw_Track(t);
+					
+					t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk_info[t]['name'],desc:trk_info[t]['desc'],color:trk_info[t]['color'],number:t});
+					t = 2; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk_info[t]['name'],desc:trk_info[t]['desc'],color:trk_info[t]['color'],number:t});
+					
+					
+					
+				
+					GV_Finish_Map(gv_options);
+					
+				} else {
+					document.getElementById('gmap_div').style.backgroundColor = '#DDDDDD';
+					document.getElementById('gmap_div').innerHTML = 'Sorry, your Google Map cannot be displayed.';
+				}
+			}
+			GV_Map(); // execute the above code
+		</script>
+		
+		
+	</body>
+
+</html>
