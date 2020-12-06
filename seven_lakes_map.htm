@@ -54,7 +54,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after loading of API code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20200817214758): */
+			/* Global variables used by the GPS Visualizer functions (20201205210420): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -93,7 +93,7 @@
 			gv_options.measurement_options = { visible:false, distance_color:'', area_color:'' };
 			gv_options.crosshair_hidden = true;  // true|false: hide the crosshair initially?
 			gv_options.mouse_coordinates = false;  // true|false: show a "mouse coordinates" box?
-			gv_options.utilities_menu = { 'maptype':true, 'opacity':true, 'measure':true, 'geolocate':true, 'profile':true, 'export':true };
+			gv_options.utilities_menu = { 'maptype':true, 'opacity':true, 'measure':true, 'geolocate':true, 'profile':true, 'export':false };
 			gv_options.allow_export = false;  // true|false
 			
 			gv_options.infobox_options = {}; // options for a floating info box (id="gv_infobox"), which can contain anything
@@ -122,7 +122,7 @@
 			  gv_options.tracklist_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
 			  gv_options.tracklist_options.header = 'Tracks:'; // HTML code; be sure to put backslashes in front of any single quotes, and don't include any line breaks
 			  gv_options.tracklist_options.footer = ''; // HTML code
-			gv_options.profile_options = { visible:false, icon:true, units:'metric', filled:true, y_min:null, y_max:null, height:120, width:690, gap_between_tracks:false, waypoints:false }; // see https://www.gpsvisualizer.com/tutorials/profiles_in_maps.html
+			gv_options.profile_options = { visible:false, icon:true, units:'metric', filled:true, y_min:null, y_max:null, height:120, width:'100%', gap_between_tracks:false, waypoints:false }; // see https://www.gpsvisualizer.com/tutorials/profiles_in_maps.html
 
 
 			// marker-related options:
