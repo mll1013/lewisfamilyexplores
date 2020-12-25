@@ -55,7 +55,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after loading of API code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20201208204119): */
+			/* Global variables used by the GPS Visualizer functions (20201224160338): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -83,6 +83,7 @@
 			gv_options.zoom_control = 'large'; // 'large'|'small'|'none'
 			gv_options.recenter_button = true; // true|false: is there a 'click to recenter' button above the zoom control?
 			gv_options.geolocation_control = false; // true|false; only works on secure servers
+			gv_options.geolocation_options = { center:true, zoom:null, marker:true, info_window:true };
 			gv_options.scale_control = true; // true|false
 			gv_options.map_opacity_control = 'utilities';  // 'map'|'utilities'|'both'|false: where does the opacity control appear?
 			gv_options.map_type_control = {};  // widget to change the background map
