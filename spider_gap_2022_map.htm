@@ -1,0 +1,957 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>GPS Visualizer: Draw a map from a GPS data file</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+	<link rel="stylesheet" href="/gpsv.css" type="text/css" />
+	<script type="text/javascript" src="/gpsv.js"></script>
+	<script type="text/javascript" src="/ads.js?adname="></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-64724077-1"></script>
+	<script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-64724077-1');</script>
+	<script type="text/javascript" src="//cdn.thisiswaldo.com/static/js/4722.js"></script>
+	<link rel="shortcut icon" href="/favicon.png" />
+	<link rel="icon" sizes="144x144" href="/images/g-144x144.png" />
+	<meta name="theme-color" content="#0D4E0D" />
+	<link rel="image_src" href="https://www.gpsvisualizer.com/images/gpsvisualizer_thumbnail3.jpg" />
+	<meta property="og:image" content="https://www.gpsvisualizer.com/images/gpsvisualizer_thumbnail3.jpg" />
+	<meta name="description" content="GPS Visualizer can read GPS data files (tracklogs &amp; waypoints), street addresses, or simple coordinates, and plot them on Leaflet maps or Google Maps.">
+</head>
+
+
+<body style="margin:0px;" onload="ChangeFormTarget(document.forms.main); AdjustHTMLMapList(document.forms.main); ChangeHTMLFormThumbnail(document.forms.main); Check_URL_For_Advanced_Options('show.?(advanced|map.?advanced)','advanced_map_options_2','advanced_map_options_link'); Check_URL_For_Advanced_Options('show.?(advanced|map.?advanced)','advanced_map_options','advanced_map_options_link'); Check_URL_For_Advanced_Options('show.?(advanced|trk.?advanced)','advanced_track_options','advanced_track_options_link'); Check_URL_For_Advanced_Options('show.?(advanced|trk.?advanced)','advanced_track_options_2','advanced_track_options_link'); Check_URL_For_Advanced_Options('show.?(advanced|trk.?advanced)','tickmark_options_row'); Check_URL_For_Advanced_Options('show.?(advanced|wpt.?advanced)','advanced_waypoint_options','advanced_waypoint_options_link'); Check_URL_For_Advanced_Options('show.?(advanced|wpt.?advanced)','advanced_waypoint_options_2','advanced_waypoint_options_link'); Check_URL_For_Highlighting(); ChangeExampleIcon('select:google_wpt_sym','select:wpt_color','example_icon_block','input:wpt_sym_custom'); Store_Form_Defaults('main');">
+
+<div class="nonmobile_masthead" style="width:100%; background-color:#0d4e0d; padding:0px; color:#ffffff;">
+<table cellspacing="0" cellpadding="0" border="0" style="background-color:#0d4e0d;">
+<tr align="left" valign="middle">
+	<td style="padding-right:10px;"><a href="/"><img src="/images/gpsvisualizer_465x74.png" alt="GPS Visualizer" width="465" height="74" border="0" /></a></td>
+	<td style="padding-right:15px;">
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tr valign="top">
+				<td class="header_link" style="padding-left:9px; padding-right:6px;" nowrap>
+					<p><a href="/map_input" style="text-transform:uppercase">Make a map</a></p>
+					<p>- <a href="/map_input?form=leaflet">Leaflet</a>/<a href="/map_input?form=google">Google</a></p>
+					<p>- <a href="/map_input?form=googleearth">Google Earth</a></p>
+					<p>- <a href="/map_input?form=jpg">JPG</a>/<a href="/map_input?form=png">PNG</a>/<a href="/map_input?form=svg">SVG</a></p>
+				</td>
+				<td class="header_link" style="padding-left:9px; padding-right:6px;" nowrap>
+					<p><a href="/profile_input" style="text-transform:uppercase">Make a profile</a></p>
+					<p><a href="/convert_input" style="text-transform:uppercase">Convert a file</a></p>
+					<p><a href="/draw/">Draw on a map</a></p>
+					<p><a href="/calculators">Calculators</a></p>
+				</td>
+				<td class="header_link" style="padding-left:9px; padding-right:6px;" nowrap>
+					<p><a href="/geocoding.html">Geocode addresses</a></p>
+					<p><a href="/elevation">Look up elevations</a></p>
+					<p><a href="/atlas.html">Atlas: Share a map</a></p>
+					<p><a href="/gpsbabel/">GPSBabel</a></p>
+				</td>
+				<td class="header_link" style="padding-left:9px; padding-right:6px;" nowrap>
+					<p><a href="/examples/">Examples</a></p>
+					<p><a href="/tutorials/">Help/FAQ</a></p>
+					<p><a href="/about.html">About GPSV</a></p>
+				</td>
+			</tr>
+		</table>
+	</td>
+	<td valign="top" align="right" width="36" style="padding-top:6px;">
+		<a target="_blank" href="https://www.facebook.com/gpsvisualizer" class="facebook_link"><img src="/images/facebook-32x32.png" width="32" height="32" border="0" /></a>
+	</td>
+</tr>
+</table>
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0"><tr align="left" valign="top">
+<td id="sidebar" style="height:100%; padding:8px;">
+	<div id="sidebar_strip" style="padding:0px; min-width:160px; transition:min-width 0.5s;">
+	
+<div id="waldo-tag-4729"></div>
+
+
+	</div>
+</td>
+<td class="nonmobile_body" width="99%">
+
+	<div id="header_strip" style="padding:3px; height:90px; max-height:90px; overflow:hidden; transition:min-height 0.5s; text-align:center;">
+
+				<div id="waldo-tag-4731" style="display:inline-block; margin:0 auto 0 auto; vertical-align:middle;">
+			<table id="waldo_donation_strip" style="display:none;"><tr><td height="50" valign="middle" nowrap><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PN7SLQGN4BYNE&source=url"><img src="/images/paypal-130x50.png" border="0" align="absmiddle" style="margin-right:4px;" /></a> <b>No ads? No problem!</b> You can support GPS Visualizer by <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PN7SLQGN4BYNE&source=url">making a donation with PayPal</a> instead.</td></tr></table>
+		</div>
+		
+		<script type="text/javascript">
+			function ShrinkHeaderAndSidebar() {
+				if (document.getElementById('sidebar_strip')) {
+					//document.getElementById('sidebar_strip').style.minWidth = '80px';
+				}
+				if (document.getElementById('header_strip')) {
+					document.getElementById('header_strip').style.height = 'none';
+					document.getElementById('header_strip').style.minHeight = '0px';
+				}
+			}
+			function CheckForWaldo() {
+				if (!document.getElementById('waldo_donation_strip')) { return false; }
+				var blocked = false;
+				var parent = document.getElementById('waldo_donation_strip').parentNode;
+				var grandparent = (parent && parent.parentNode) ? parent.parentNode : null;
+				if(!document.getElementById('waldo_donation_strip')) { // it's been eliminated
+					blocked = false;
+				} else if (parent && parent.childElementCount == 1) { // nothing was inserted next to the donation message
+					blocked = true;
+				}
+				if (blocked) {
+					ShrinkHeaderAndSidebar();
+					if (document.getElementById('waldo_donation_strip')) { document.getElementById('waldo_donation_strip').style.display = 'inline-block'; }
+				}
+			}
+			function DonationBanner() {
+				AdBlockerDetected = (self.NoAdBlocker) ? false : true;
+				if (AdBlockerDetected){ // ad blocker IS in use
+					if (document.getElementById('header_strip')) {
+						var msg = '<table id="donation_strip" cellspacing="0" cellpadding="0" border="0" style="height:100%"><tr><td height="50" valign="middle"><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PN7SLQGN4BYNE&source=url"><img src="/images/paypal-130x50.png" border="0" align="absmiddle" style="margin-right:4px;"><'+'/a><'+'/td><'+'td><b>No ads? No problem.<'+'/b> You can support GPS Visualizer by <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PN7SLQGN4BYNE&source=url">making a donation with PayPal<'+'/a> instead.<'+'/td><'+'/tr><'+'/table>';
+						document.getElementById('header_strip').innerHTML = msg;
+					}
+					// ShrinkHeaderAndSidebar();
+				}
+				// the following line puts in the donation message even if an ad-blocker wasn't detected, by detecting that the "waldo" tag was NOT replaced with an ad.
+				window.setTimeout("CheckForWaldo()",5000);
+			}
+			window.setTimeout('DonationBanner()',2000);
+		</script>
+	</div>
+
+<br>
+<img id="form_thumbnail" src="/images/form_thumb_leaflet.jpg" border="0" hspace="0" alt="" style="float:left; padding:0px 12px 6px 0px;">
+<h1 style="margin-top:0px">Make an HTML Map (<a href="javascript:void(0)" onclick="document.forms.main.format.value='google'; AdjustHTMLMapList(document.forms.main); ChangeHTMLFormThumbnail(document.forms.main); ChangeHTMLFormAction(document.forms.main);">Google</a>/<a href="javascript:void(0)" onclick="document.forms.main.format.value='leaflet'; AdjustHTMLMapList(document.forms.main); ChangeHTMLFormThumbnail(document.forms.main); ChangeHTMLFormAction(document.forms.main);">Leaflet</a>) from a GPS file</h1>
+<p>
+	<b>Other forms:</b>&nbsp;
+	<!-- <nobr><a href="/map_input?form=leaflet"><img src="/images/form_icon_leaflet.gif" width="24" height="24" align="absmiddle" alt="" border="0" style="padding:0px 3px 0px 0px;"></a><b><a href="/map_input?form=leaflet">Leaflet HTML</a></b>,&nbsp;</nobr> -->
+	<nobr><a href="/map_input?form=googleearth"><img src="/images/form_icon_googleearth.gif" width="24" height="24" align="absmiddle" alt="" border="0" style="padding:0px 3px 0px 0px;"></a><b><a href="/map_input?form=googleearth">Google Earth KML/KMZ</a></b>,&nbsp;</nobr>
+	<nobr><a href="/map_input?form=jpg"><img src="/images/form_icon_jpg.gif" width="24" align="absmiddle" height="24" alt="" border="0" style="padding:0px 3px 0px 0px;"></a><b><a href="/map_input?form=jpg">JPEG</a>/<a href="/map_input?form=png">PNG</a>/<a href="/map_input?form=svg">SVG</a></b>,&nbsp;</nobr>
+	<nobr><a href="/map_input?form=data"><img src="/images/form_icon_data.gif" width="24" align="absmiddle" height="24" alt="" border="0" style="padding:0px 3px 0px 0px;"></a><b><a href="/map_input?form=data">Quantitative data</a></b>,&nbsp;</nobr>
+	<nobr>
+		<a href="/convert_input?convert_format=gpx"><img src="/images/form_icon_text.gif" width="24" align="absmiddle" height="24" alt="" border="0" style="padding:0px 3px 0px 0px;"></a><b><a href="/convert_input?convert_format=gpx">GPX</a>/<a href="/convert_input?convert_format=text">text</a></b>,&nbsp;
+		<a href="/profile_input"><img src="/images/form_icon_profile.gif" width="24" align="absmiddle" height="24" alt="" border="0" style="padding:0px 3px 0px 0px;"></a><b><a href="/profile_input">Profiles</a></b>
+	</nobr>
+</p>
+<p>This form will automatically draw your GPS data (or KML/KMZ file, or plain text data in CSV or tab-delimited format) overlaid upon a variety of background maps and imagery, using either the <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/">Google Maps API</a> or <a target="_blank" href="https://leafletjs.com/">Leaflet</a>, an open-source mapping library.</p>
+<p>Please note that creating a map with a very large number of waypoints (or very long tracklogs, especially if speed or altitude colorization is enabled) can cause your Web browser to grind to a halt.  If you have thousands of markers, <a href="/map_input?form=googleearth">Google Earth</a> might be a better choice.</p>
+<p><b>If you don't have GPS data</b> and want to interactively <b>draw on a map</b>, use <a href="/draw/">GPS Visualizer's "sandbox"</a> to create your own GPX or KML file.</p>
+<br clear="all" />
+
+<div id="v3_message" style="display:none;"></div>
+
+
+<span style="color:#CC0000; font-weight:bold"></span>
+
+
+
+
+<form name="main" target="_blank" method="POST" enctype="multipart/form-data" action="map?output_leaflet" onsubmit="return Validate_Map_Form(document.forms.main);" class="gpsv_form">
+
+<div style="float:left; margin-right:12px; margin-bottom:8px;">
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%" class="gv_input_form">
+<tr><td colspan="2" class="gpsv_form_heading">
+	<table cellspacing="0" cellpadding="0" width="100%"><tr valign="top">
+	<td align="left">General map parameters</td><td>&nbsp;&nbsp;</td>
+	<td align="right"><a href="javascript:void(0)" class="gpsv_show_advanced_link" onclick="Toggle('advanced_map_options'); if(document.getElementById('advanced_map_options').style.display=='none'){this.innerHTML='show advanced map options [+]';this.blur();}else{this.innerHTML='hide advanced map options [-]';this.blur();}; return true;" id="advanced_map_options_link">show advanced map options [+]</a></td>
+	</tr></table>
+</td></tr>
+<tr valign="middle">
+	<td align="center" colspan="2" nowrap>
+		Format:
+		<select class="normal" name="format" size="1" id="format" onchange="AdjustHTMLMapList(this.form); ChangeHTMLFormThumbnail(this.form); ChangeHTMLFormAction(this.form);"><option value="leaflet" selected>Leaflet</option><option value="google">Google Maps</option></select>
+		<a target="help" class="linktohelp" href="help.html#format" onclick="HelpPopup('format'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Width:
+		<input type="text" size="5" maxlength="5" name="width" value="700"> pixels
+		<a target="help" class="linktohelp" href="help.html#html_width" onclick="HelpPopup('html_width'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Height:&nbsp;<input type="text" size="5" maxlength="5" name="height" value="auto">
+		<a target="help" class="linktohelp" href="help.html#html_height" onclick="HelpPopup('html_height'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> pixels
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>
+		Full screen mode:
+	</td>
+	<td nowrap>
+		<select class="normal" name="google_full_screen" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_full_screen" onclick="HelpPopup('google_full_screen'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;Title:&nbsp;
+		<input type="text" size="30" name="drawing_title" value="">
+		<a target="help" class="linktohelp" href="help.html#drawing_title" onclick="HelpPopup('drawing_title'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>
+		Initial map type:
+	</td>
+	<td nowrap>
+		<select class="normal" name="bg_map" size="1" onchange="if(this.value=='custom'){Show('bg_map_custom_row');this.form.bg_map_custom.focus();}" onfocus="if(this.value=='custom'){Show('bg_map_custom_row');}"><option value="google_map">Google street map</option><option value="google_satellite">Google aerial/satellite imagery</option><option value="google_hybrid">Google hybrid (streets+satellite)</option><option value="google_physical">Google terrain (physical map)</option><option value="google_openstreetmap">OpenStreetMap</option><option value="google_openstreetmap_relief" selected>OpenStreetMap + relief</option><option value="google_openstreetmap_tf">OpenStreetMap (ThunderForest)</option><option value="google_openstreetmap_komoot">OpenStreetMap (Komoot)</option><option value="google_opencyclemap">OpenCycleMap (ThunderForest)</option><option value="google_opentopomap">OpenTopoMap</option><option value="google_4umaps">Topo map (4UMaps.eu)</option><option value="google_map_arcgis">ArcGIS street map</option><option value="google_aerial_arcgis">ArcGIS aerial imagery</option><option value="google_hybrid_arcgis">ArcGIS hybrid (aerial+streets)</option><option value="google_arcgistopo_world">ArcGIS topo/relief</option><option value="naip_aerial">US: aerial imagery (NAIP)</option><option value="google_arcgistopo_us">US: USGS topo maps (ArcGIS)</option><option value="us_county_outlines">US: county outlines</option><option value="national_atlas">US: The National Atlas</option><option value="google_osm_relief_us">US: OpenStreetMap + relief</option><option value="nrcan_toporama">Canada Toporama (NRCan)</option><option value="nrcan_toporama2">Canada Toporama, no names</option><option value="custom">[OTHER]</option></select>
+		<a target="help" class="linktohelp" href="help.html#bg_map" onclick="HelpPopup('bg_map'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Opacity:<select class="normal" name="bg_opacity" size="1"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#bg_opacity" onclick="HelpPopup('bg_opacity'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="bg_map_custom_row" style="display:none;">
+	<td align="right" nowrap>&nbsp;</td>
+	<td nowrap>
+	Custom background map: <input type="text" size="30" name="bg_map_custom" value="" placeholder="GPS Visualizer map ID" title="Click the help link (?) for map IDs" onchange="if(this.value!=''){this.form.bg_map.value='custom';}" />
+	<a target="_blank" class="linktohelp" href="/misc/leaflet_map_types.html"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Time offset:</td>
+	<td nowrap>
+		<input type="text" size="3" name="time_offset" value=""> hrs
+		<a target="help" class="linktohelp" href="help.html#time_offset" onclick="HelpPopup('time_offset'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Units:&nbsp;<select class="normal" name="units" size="1"><option value="metric">Metric</option><option value="us">U.S.</option><option value="nautical">Nautical</option></select> (in legend, etc.)
+		<a target="help" class="linktohelp" href="help.html#units" onclick="HelpPopup('units'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="google_api_key_row">
+	<td align="left" nowrap colspan="2">Your project's Google API key:
+	<input type="text" size="38" name="google_api_key" value="" id="input:google_api_key">
+	<a href="javascript:void(0)" onclick="clearKeyCookie('google_api_key'); $('input:google_api_key').value='';" title="Clear the Google API Key cookie">[clear]</a>
+	<a class="linktohelp" href="/misc/google_api_keys.html" target="help" onclick="	window.open('/misc/google_api_keys.html','help').focus();"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>	
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap colspan="2">
+	Add DEM elevation data:
+	<select class="normal" name="add_elevation" size="1"><option value="0" selected>No</option><option value="auto">best available source</option><option value="NED1">USGS NED1 (30m res., North America)</option><option value="NED2">USGS NED2 (60m res., Alaska only)</option><option value="ODP1">ODP1 (30m res., northern/western Europe)</option><option value="SRTM1">NASA SRTM1 (30m res., NoAm, Europe, more)</option><option value="SRTM3">NASA SRTM3 (90m res., worldwide)</option><option value="ASTER">ASTER (30m res., very limited availability)</option></select>
+		<a target="help" class="linktohelp" href="help.html#add_elevation" onclick="HelpPopup('add_elevation'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap colspan="2">
+		Allow elevation profiles:&nbsp;		<select class="normal" name="map_profile" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#map_profile" onclick="HelpPopup('map_profile'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		Allow export of map data:
+		<select class="normal" name="allow_export" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#allow_export" onclick="HelpPopup('allow_export'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		<div id="advanced_map_options_2" class="advanced_options_box" style="display:none;">
+		</div>
+	</td>
+</tr>
+</table>
+<div id="advanced_map_options" class="advanced_options_box" style="display:none;">
+<table cellspacing="0" cellpadding="2" border="0" width="100%" class="gv_input_form">
+<tr valign="middle">
+	<td align="left" nowrap>
+		Profile is visible:&nbsp;<select class="normal" name="map_profile_visible" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#map_profile_visible" onclick="HelpPopup('map_profile_visible'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Profile width:&nbsp;<input type="text" size="3" maxlength="4" name="map_profile_width" value="">px
+		<a target="help" class="linktohelp" href="help.html#map_profile_width" onclick="HelpPopup('map_profile_width'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Filled:&nbsp;<select class="normal" name="map_profile_filled" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#map_profile_filled" onclick="HelpPopup('map_profile_filled'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+		Zoom control:
+		<select class="normal" name="zoom_control" size="1"><option value="auto" selected>Auto</option><option value="large">Large</option><option value="small">Small</option><option value="none">None</option></select>
+		<a target="help" class="linktohelp" href="help.html#zoom_control" onclick="HelpPopup('zoom_control'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Scale bar:
+		<select class="normal" name="google_scale" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_scale" onclick="HelpPopup('google_scale'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Utilities menu:
+		<select class="normal" name="google_utilities_menu" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_utilities_menu" onclick="HelpPopup('google_utilities_menu'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+		Map type control:&nbsp;<select class="normal" name="google_maptype_control" size="1"><option value="auto" selected>Auto</option><option value="2">Utilities menu</option><option value="1">On the map</option><option value="3">Menu + map</option><option value="0">None</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_maptype_control" onclick="HelpPopup('google_maptype_control'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Opacity control:&nbsp;<select class="normal" name="google_opacity" size="1"><option value="0">None</option><option value="1">On the map</option><option value="2" selected>Utilities menu</option><option value="3">Map + menu</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_opacity" onclick="HelpPopup('google_opacity'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+		Restrict background map choices based on initial location:&nbsp;<select class="normal" name="google_filter_map_types" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_filter_map_types" onclick="HelpPopup('google_filter_map_types'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+		Geolocation control:&nbsp;<select class="normal" name="geolocation_control" size="1"><option value="0">None</option><option value="1">On the map</option><option value="2" selected>Utilities menu</option><option value="3">Map + menu</option></select>
+		<a target="help" class="linktohelp" href="help.html#geolocation_control" onclick="HelpPopup('geolocation_control'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> (map must be on https server)
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+		Initial zoom level:
+		<input type="text" size="4" maxlength="4" name="google_zoom_level" value="">
+		<a target="help" class="linktohelp" href="help.html#google_zoom_level" onclick="HelpPopup('google_zoom_level'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Initial center point:&nbsp;<input type="text" size="16" name="center_point" value="">
+		<a target="help" class="linktohelp" href="help.html#center_point" onclick="HelpPopup('center_point'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Center coords:&nbsp;<select class="normal" name="google_center_box" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_center_box" onclick="HelpPopup('google_center_box'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Mouse coords:&nbsp;<select class="normal" name="google_mouse_box" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_mouse_box" onclick="HelpPopup('google_mouse_box'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Ruler:&nbsp;<select class="normal" name="google_measurement" size="1"><option value="both" selected>Yes</option><option value="utilities">In menu</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_measurement" onclick="HelpPopup('google_measurement'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+		Address search box:&nbsp;<select class="normal" name="google_searchbox" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_searchbox" onclick="HelpPopup('google_searchbox'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Street View:&nbsp;<select class="normal" name="google_street_view" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_street_view" onclick="HelpPopup('google_street_view'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;3-D:&nbsp;<select class="normal" name="google_tilt" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_tilt" onclick="HelpPopup('google_tilt'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td colspan="2" align="left" nowrap>
+	<table cellspacing="0" cellpadding="0"><tr valign="middle">
+		<td>Legend/info box contents:&nbsp;</td>
+		<td class="notranslate"><textarea name="legend_html" rows="2" cols="24" wrap="off"></textarea></td>
+		<td class="smaller">(Enter HTML code; use<br> &lt;br&gt; for line breaks)</td>
+		<!-- <td>&nbsp;<a target="help" class="linktohelp" href="help.html#legend_html" onclick="HelpPopup('legend_html'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a></td> -->
+	</tr></table>
+	</td>
+</tr>
+<tr valign="middle">
+	<td colspan="2" align="left" nowrap>
+	<table cellspacing="0" cellpadding="0"><tr valign="middle">
+		<td>Custom HTML styles:&nbsp;</td>
+		<td class="notranslate"><textarea name="google_css" rows="2" cols="24" wrap="off"></textarea></td>
+		<td class="smaller">(CSS style directives or<br> URL of a style sheet)</td>
+		<td>&nbsp;<a target="help" class="linktohelp" href="help.html#google_css" onclick="HelpPopup('google_css'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a></td>
+	</tr></table>
+	</td>
+</tr>
+<tr valign="middle">
+	<td colspan="2" align="left" nowrap>
+	<table cellspacing="0" cellpadding="0"><tr valign="middle">
+		<td>Custom JavaScript before the map loads:&nbsp;</td>
+		<td class="notranslate"><textarea name="google_js" rows="2" cols="24" wrap="off"></textarea></td>
+		<td>&nbsp;<a target="help" class="linktohelp" href="help.html#google_js" onclick="HelpPopup('google_js'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a></td>
+	</tr><tr valign="middle">
+		<td>Custom JavaScript after the map loads:&nbsp;</td>
+		<td class="notranslate"><textarea name="google_js2" rows="2" cols="24" wrap="off"></textarea></td>
+		<td>&nbsp;<a target="help" class="linktohelp" href="help.html#google_js" onclick="HelpPopup('google_js'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a></td>
+	</tr></table>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap colspan="2">ThunderForest.com API key:
+	<input type="text" size="40" name="thunderforest_api_key" value="">
+		<a target="help" class="linktohelp" href="https://www.thunderforest.com/docs/apikeys/" target="_blank"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap colspan="2">IGN.fr API key:
+	<input type="text" size="40" name="ign_api_key" value="">
+		<a target="help" class="linktohelp" href="https://api.ign.fr/" target="_blank"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+</div>
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin-top:8px;" class="gpsv_form_heading">
+<tr><td colspan="2" class="gpsv_form_heading">
+	<table cellspacing="0" cellpadding="0" width="100%"><tr valign="top">
+	<td align="left">Track options</td><td>&nbsp;&nbsp;</td>
+	<td align="right"><a href="javascript:void(0)" class="gpsv_show_advanced_link" onclick="Toggle('advanced_track_options'); Toggle('advanced_track_options_2'); if(document.getElementById('advanced_track_options').style.display=='none'){this.innerHTML='show advanced track options [+]';this.blur();}else{this.innerHTML='hide advanced track options [-]';this.blur();}; return true;" id="advanced_track_options_link">show advanced track options [+]</a></td>
+	</tr></table>
+</td></tr>
+</table>
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td align="right" nowrap>Track opacity:</td>
+	<td nowrap>
+	<select class="normal" name="trk_opacity" size="1"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90" selected>90%</option><option value="100">100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_opacity" onclick="HelpPopup('trk_opacity'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Line width:&nbsp;<input type="text" size="2" maxlength="3" name="trk_width" value="3">
+		<a target="help" class="linktohelp" href="help.html#trk_width" onclick="HelpPopup('trk_width'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Colorize by:</td>
+	<td nowrap>
+	<select class="normal" name="trk_colorize" size="1" onchange="if(this.value=='custom'){Show('trk_colorize_custom_row');this.form.trk_colorize_custom.focus();}else if(this.value=='vmg'){Show('vmg_point_row');this.form.vmg_point.focus();}" onfocus="if(this.value=='custom'){Show('trk_colorize_custom_row');}else if(this.value=='vmg'){Show('vmg_point_row');}"><option value="none">None</option><option value="track" selected>Track (recommended)</option><option value="altitude">Altitude/elevation</option><option value="speed">Speed</option><option value="distance">Distance</option><option value="time">Time</option><option value="course">Course/heading</option><option value="slope">Slope</option><option value="climb">Climb rate</option><option value="pace">Pace</option><option value="hr">Heart rate</option><option value="cadence">Cadence</option><option value="vmg">V.M.G.</option><option value="sat">Satellites</option><option value="hdop">HDOP</option><option value="snr">SNR</option><option value="n">N</option><option value="custom">custom field</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_colorize" onclick="HelpPopup('trk_colorize'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;Default color:&nbsp;<select class="normal" name="trk_hue" size="1"><option value="0" selected style="border-left:12px solid #ff0000; color:#ff0000;">Red</option><option value="30" style="border-left:12px solid #ff7f00; color:#ff7f00;">Orange</option><option value="60" style="border-left:12px solid #cccc00; color:#cccc00;">Yellow</option><option value="120" style="border-left:12px solid #00cc00; color:#00cc00;">Green</option><option value="180" style="border-left:12px solid #00cccc; color:#00cccc;">Cyan</option><option value="240" style="border-left:12px solid #0000cc; color:#0000cc;">Blue</option><option value="270" style="border-left:12px solid #7f00ff; color:#7f00ff;">Violet</option><option value="300" style="border-left:12px solid #cc00cc; color:#cc00cc;">Magenta</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_hue" onclick="HelpPopup('trk_hue'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="trk_colorize_custom_row" style="display:none;">
+	<td align="right" nowrap>&nbsp;</td>
+	<td nowrap>
+	Custom colorization field: <input type="text" size="12" name="trk_colorize_custom" value="" onchange="if(this.value!=''){this.form.trk_colorize.value='custom';}">
+	</td>
+</tr>
+<tr valign="middle" id="vmg_point_row" style="display:none;">
+	<td align="right" nowrap>&nbsp;</td>
+	<td align="left" nowrap>
+	VMG target waypoint:
+	<input type="text" size="20" name="vmg_point" value="">
+		<a target="help" class="linktohelp" href="help.html#vmg_point" onclick="HelpPopup('vmg_point'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+
+<div id="advanced_track_options" class="advanced_options_box" style="display:none;">
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td align="right" nowrap>Colorize min.:</td>
+	<td nowrap>
+	<input type="text" size="3" name="colorize_min" value="">
+		<a target="help" class="linktohelp" href="help.html#colorize_limits" onclick="HelpPopup('colorize_limits'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Colorize max.:&nbsp;<input type="text" size="3" name="colorize_max" value="">
+		<a target="help" class="linktohelp" href="help.html#colorize_limits" onclick="HelpPopup('colorize_limits'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Lightness:</td>
+	<td nowrap>
+	<select class="normal" name="lightness" size="1"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90" selected>90%</option><option value="100">100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#lightness" onclick="HelpPopup('lightness'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;Saturation:&nbsp;<select class="normal" name="saturation" size="1"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#saturation" onclick="HelpPopup('saturation'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Spectrum direction:</td>
+	<td nowrap>
+	<select class="normal" name="colorize_reverse" size="1"><option value="0" selected>up</option><option value="1">down</option></select>
+		<a target="help" class="linktohelp" href="help.html#hue" onclick="HelpPopup('hue'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;Hue 1:&nbsp;<select class="normal" name="hue1" size="1"><option value="0" selected     style="border-left:12px solid #ff0000; color:#ff0000;">0&deg;</option><option value="30" style="border-left:12px solid #cc6600; color:#cc6600;">30&deg;</option><option value="45" style="border-left:12px solid #cc9900; color:#cc9900;">45&deg;</option><option value="60" style="border-left:12px solid #cccc00; color:#cccc00;">60&deg;</option><option value="90" style="border-left:12px solid #66cc00; color:#66cc00;">90&deg;</option><option value="120" style="border-left:12px solid #00cc00; color:#00cc00;">120&deg;</option><option value="135" style="border-left:12px solid #00cc33; color:#00cc33;">135&deg;</option><option value="150" style="border-left:12px solid #00cc66; color:#00cc66;">150&deg;</option><option value="180" style="border-left:12px solid #00cccc; color:#00cccc;">180&deg;</option><option value="210" style="border-left:12px solid #0066cc; color:#0066cc;">210&deg;</option><option value="225" style="border-left:12px solid #0033cc; color:#0033cc;">225&deg;</option><option value="240" style="border-left:12px solid #0000cc; color:#0000cc;">240&deg;</option><option value="270" style="border-left:12px solid #6600cc; color:#6600cc;">270&deg;</option><option value="300" style="border-left:12px solid #cc00cc; color:#cc00cc;">300&deg;</option><option value="315" style="border-left:12px solid #cc0099; color:#cc0099;">315&deg;</option><option value="330" style="border-left:12px solid #cc0066; color:#cc0066;">330&deg;</option></select>
+		<a target="help" class="linktohelp" href="help.html#hue" onclick="HelpPopup('hue'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;Hue 2:&nbsp;<select class="normal" name="hue2" size="1"><option value="0"     style="border-left:12px solid #ff0000; color:#ff0000;">0&deg;</option><option value="30" style="border-left:12px solid #cc6600; color:#cc6600;">30&deg;</option><option value="45" style="border-left:12px solid #cc9900; color:#cc9900;">45&deg;</option><option value="60" style="border-left:12px solid #cccc00; color:#cccc00;">60&deg;</option><option value="90" style="border-left:12px solid #66cc00; color:#66cc00;">90&deg;</option><option value="120" style="border-left:12px solid #00cc00; color:#00cc00;">120&deg;</option><option value="135" style="border-left:12px solid #00cc33; color:#00cc33;">135&deg;</option><option value="150" style="border-left:12px solid #00cc66; color:#00cc66;">150&deg;</option><option value="180" style="border-left:12px solid #00cccc; color:#00cccc;">180&deg;</option><option value="210" style="border-left:12px solid #0066cc; color:#0066cc;">210&deg;</option><option value="225" style="border-left:12px solid #0033cc; color:#0033cc;">225&deg;</option><option value="240" style="border-left:12px solid #0000cc; color:#0000cc;">240&deg;</option><option value="270" style="border-left:12px solid #6600cc; color:#6600cc;">270&deg;</option><option value="300" selected style="border-left:12px solid #cc00cc; color:#cc00cc;">300&deg;</option><option value="315" style="border-left:12px solid #cc0099; color:#cc0099;">315&deg;</option><option value="330" style="border-left:12px solid #cc0066; color:#cc0066;">330&deg;</option></select>
+		<a target="help" class="linktohelp" href="help.html#hue" onclick="HelpPopup('hue'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Custom spectrum file (URL):&nbsp;<input type="text" size="30" name="colorize_spectrum" value="">
+		<a target="help" class="linktohelp" href="help.html#colorize_spectrum" onclick="HelpPopup('colorize_spectrum'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Color of values beyond min. or max.:&nbsp;<select class="normal" name="colorize_gray" size="1"><option value="1" selected>Gray</option><option value="0">Min./max. color continues</option><option value="2">Do not draw</option></select>
+		<a target="help" class="linktohelp" href="help.html#colorize_gray" onclick="HelpPopup('colorize_gray'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Colorization legend:</td>
+	<td nowrap>
+	<select class="normal" name="legend_placement" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#legend_placement" onclick="HelpPopup('legend_placement'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Steps:&nbsp;<input type="text" size="3" maxlength="2" name="legend_steps" value="5">
+		<a target="help" class="linktohelp" href="help.html#legend_steps" onclick="HelpPopup('legend_steps'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;Color blocks:&nbsp;<select class="normal" name="legend_blocks" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#legend_blocks" onclick="HelpPopup('legend_blocks'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2" id="trk_preserve_attr_cell">
+	Preserve track styles in input files (e.g., from KML or Garmin GPX):&nbsp;
+	<select class="normal" name="trk_preserve_attr" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_preserve_attr" onclick="HelpPopup('trk_preserve_attr'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+</div>
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Track list:&nbsp;
+	<select class="normal" name="trk_list" size="1"><option value="desc" selected>Names and descriptions</option><option value="name">Names only</option><option value="0">No list</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_list" onclick="HelpPopup('trk_list'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Tickmark interval:&nbsp;<input type="text" size="8" name="tickmark_interval" value="" onchange="if(this.value!=''){Show('tickmark_options_row');}" onfocus="Show('tickmark_options_row')">
+		<a target="help" class="linktohelp" href="help.html#tickmark_interval" onclick="HelpPopup('tickmark_interval'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="tickmark_options_row" style="display:none;">
+	<td nowrap colspan="2">
+		Tickmark:&nbsp;<select class="normal illustrated" name="tickmark_icon" id="select:tickmark_icon" size="1"><option value="" selected style="background-image:url('/google_maps/icons/tickmark/red-r90.png'); height:26px; padding-left:22px;">default</option><option value="wedge" style="background-image:url('/google_maps/icons/wedge/red-r90.png'); height:26px; padding-left:22px;">wedge</option><option value="arrow" style="background-image:url('/google_maps/icons/arrow/red-r90.png'); height:26px; padding-left:22px;">arrow</option></select>
+		<!-- <a target="help" class="linktohelp" href="help.html#tickmark_icon" onclick="HelpPopup('tickmark_icon'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> -->
+		&nbsp;&nbsp;Cumulative dist.:&nbsp;<select class="normal" name="cumulative_distance" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<!-- <a target="help" class="linktohelp" href="help.html#cumulative_distance" onclick="HelpPopup('cumulative_distance'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> -->
+		&nbsp;&nbsp;&nbsp;Zero mark:&nbsp;<select class="normal" name="tickmark_zero" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<!-- <a target="help" class="linktohelp" href="help.html#tickmark_zero" onclick="HelpPopup('tickmark_zero'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> -->
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap>
+	Trackpoint distance threshold:
+	<input type="text" size="6" name="trk_distance_threshold" value="">
+		<a target="help" class="linktohelp" href="help.html#trk_distance_threshold" onclick="HelpPopup('trk_distance_threshold'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Max. points per track:&nbsp;<input type="text" size="5" maxlength="5" name="trk_simplify" value="">
+		<a target="help" class="linktohelp" href="help.html#trk_simplify" onclick="HelpPopup('trk_simplify'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap>
+	Draw tracks as waypoints:
+	<select class="normal" name="trk_as_wpt" size="1" onchange="if(this.value=='custom'){Show('trk_as_wpt_custom_row');this.form.trk_as_wpt_name.focus();}else{Hide('trk_as_wpt_custom_row');}" onfocus="if(this.value=='custom'){Show('trk_as_wpt_custom_row');}"><option value="0" selected>No</option><option value="blank">Yes, with no names</option><option value="time">Yes, named with time stamps</option><option value="numbers">Yes, named with sequential trackpoint numbers</option><option value="colorize">Yes, named with data from the "colorize" field</option><option value="custom">Yes, using a custom template</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_as_wpt" onclick="HelpPopup('trk_as_wpt'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="trk_as_wpt_custom_row" style="display:none;">
+	<td nowrap align="right">
+	Name template: <input type="text" size="18" name="trk_as_wpt_name" value=""> &nbsp;
+	Desc. template: <input type="text" size="18" name="trk_as_wpt_desc" value="">
+	</td>
+</tr>
+</table>
+
+<div id="advanced_track_options_2" class="advanced_options_box" style="display:none;">
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td align="left" nowrap>
+	Remove all tracks:
+	<select class="normal" name="show_trk" size="1"><option value="1" selected>No</option><option value="0">Yes</option></select>
+		<a target="help" class="linktohelp" href="help.html#show_trk" onclick="HelpPopup('show_trk'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;
+	Reverse tracks:
+	<select class="normal" name="reverse" size=1><option value="0" selected>No</option><option value="1">Yes</option></select>
+		<a target="help" class="linktohelp" href="help.html#reverse" onclick="HelpPopup('reverse'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Connect segments:
+	<select class="normal" name="connect_segments" size=1><option value="0" selected>No, leave gap</option><option value="1">Yes</option></select>
+		<a target="help" class="linktohelp" href="help.html#connect_segments" onclick="HelpPopup('connect_segments'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+		&nbsp;&nbsp;
+	Merge all tracks:
+	<select class="normal" name="trk_merge" size="1"><option value="0" selected>No</option><option value="1">Yes</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_merge" onclick="HelpPopup('trk_merge'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Segment break threshold for plain-text track data:&nbsp;<input type="text" size="6" name="trk_segment_time" value="">&nbsp;seconds
+		<a target="help" class="linktohelp" href="help.html#trk_segment_time" onclick="HelpPopup('trk_segment_time'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap>
+	Re-order coterminous tracks:
+	<select class="normal" name="trk_reorder" size="1" onchange="if(this.value!='0'){Show('trk_reorder_threshold_row');}" onfocus="if(this.value!='0'){Show('trk_reorder_threshold_row');}"><option value="0" selected>No</option><option value="m">Merge all coterminous tracks</option><option value="mr">Merge all coterminous tracks (allow reversal)</option><option value="mn">Merge tracks if names match</option><option value="mnr">Merge tracks if names match (allow reversal)</option><option value="o">Re-order only</option><option value="or">Re-order only (allow reversal)</option></select>
+	<a target="help" class="linktohelp" href="help.html#trk_reorder" onclick="HelpPopup('trk_reorder'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="trk_reorder_threshold_row" style="display:none;">
+	<td align="left" nowrap>
+	&nbsp;&nbsp;&nbsp;Threshold (in meters) for re-ordering/merging tracks:&nbsp;<input type="text" size="3" maxlength="4" name="trk_reorder_threshold" value="0">
+	<a target="help" class="linktohelp" href="help.html#trk_reorder_threshold" onclick="HelpPopup('trk_reorder_threshold'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Outline behind/around tracks:
+	<select class="normal" name="google_trk_outline" size="1"><option value="0" selected>No</option><option value="black">black</option><option value="white">white</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_trk_outline" onclick="HelpPopup('google_trk_outline'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;
+	Geodesic drawing:
+	<select class="normal" name="google_trk_geodesic" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<!-- <a target="help" class="linktohelp" href="help.html#google_trk_geodesic" onclick="HelpPopup('google_trk_geodesic'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> -->
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Make tracks clickable:
+	<select class="normal" name="google_trk_clickable" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_trk_clickable" onclick="HelpPopup('google_trk_clickable'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;
+	Make tracks mouseover-able:
+	<select class="normal" name="google_trk_mouseover" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_trk_mouseover" onclick="HelpPopup('google_trk_mouseover'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Default polygon opacity ("filled" tracks only):
+	<select class="normal" name="trk_fill_opacity" size="1"><option value="" selected>--</option><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_fill_opacity" onclick="HelpPopup('trk_fill_opacity'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Moving average range for estimated fields (speed, slope, etc.):
+	<input type="text" size="3" name="moving_average" value="1"> point(s)
+		<a target="help" class="linktohelp" href="help.html#moving_average" onclick="HelpPopup('moving_average'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	GPX/CSV routepoints:
+	<select class="normal" name="convert_routes" size="1"><option value="0">Do not display routes or routepoints</option><option value="t">Convert to tracks only</option><option value="t_nw" selected>Convert to tracks, but include named pts. as waypoints</option><option value="t_aw">Convert to tracks and include ALL as waypoints</option><option value="nw">Convert only named points to waypoints</option><option value="aw">Convert all points to waypoints</option></select>
+		<a target="help" class="linktohelp" href="help.html#convert_routes" onclick="HelpPopup('convert_routes'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap>
+	Show track statistics (distance, time, elevation):
+	<select class="normal" name="trk_stats" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#trk_stats" onclick="HelpPopup('trk_stats'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" nowrap id="elevation_gain_cell">
+	Calculate elevation gain:&nbsp;<select class="normal" name="trk_elevation_gain" size="1" onchange="if(this.value!=0){Track_Statistics_Warning(this);}"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="/tutorials/elevation_gain.html" xonClick="HelpPopup('trk_elevation_gain'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Elevation threshold:&nbsp;<input type="text" size="6" name="trk_elevation_threshold" value="">
+		<a target="help" class="linktohelp" href="/tutorials/elevation_gain.html" xonClick="HelpPopup('trk_elevation_threshold'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+</div>
+
+
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin-top:8px;">
+<tr><td colspan="2" class="gpsv_form_heading">
+	<table cellspacing="0" cellpadding="0" width="100%"><tr valign="top">
+	<td align="left">Waypoint options</td><td>&nbsp;&nbsp;</td>
+	<td align="right"><a href="javascript:void(0)" class="gpsv_show_advanced_link" onclick="Toggle('advanced_waypoint_options'); Toggle('advanced_waypoint_options_2'); if(document.getElementById('advanced_waypoint_options').style.display=='none'){this.innerHTML='show advanced waypoint options [+]';this.blur();}else{this.innerHTML='hide advanced waypoint options [-]';this.blur();}; return true;" id="advanced_waypoint_options_link">show advanced waypoint options [+]</a></td>
+	</tr></table>
+</td></tr>
+<tr valign="middle">
+	<td align="right" nowrap>Show waypoints:</td>
+	<td nowrap>
+	<select class="normal" name="show_wpt" size="1" onchange="if(this.value=='2'){Show('padding_row');}" onfocus="if(this.value=='2'){Show('padding_row');}"><option value="3" selected>All</option><option value="0">None</option><option value="1">In bounds of tracks only</option><option value="2">In bounds of tracks, plus padding</option></select>
+		<a target="help" class="linktohelp" href="help.html#show_wpt" onclick="HelpPopup('show_wpt'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="padding_row" style="display:none;">
+	<td align="left" nowrap colspan="2">
+	Waypoint display padding:
+	<select class="normal" name="padding" size="1"><option value="0">0%</option><option value="5">5%</option><option value="10" selected>10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#padding" onclick="HelpPopup('padding'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Default icon:</td>
+	<td nowrap>
+	<select class="normal illustrated" name="google_wpt_sym" id="select:google_wpt_sym" size="1" onchange="if(this.value=='custom'){Show('wpt_sym_custom_row');this.form.wpt_sym_custom.focus();} ChangeExampleIcon('select:google_wpt_sym','select:wpt_color','example_icon_block','input:wpt_sym_custom');" onfocus="if(this.value=='custom'){Show('wpt_sym_custom_row');}"><option value="pin" style="background-image:url('/google_maps/icons/pin/red.png'); height:26px; padding-left:22px;">pin</option><option value="google" style="background-image:url('/google_maps/icons/google/red.png'); height:34px; padding-left:22px;">google</option><option value="googleblank" style="background-image:url('/google_maps/icons/googleblank/red.png'); height:34px; padding-left:22px;">googleblank</option><option value="googlemini" selected style="background-image:url('/google_maps/icons/googlemini/red.png'); height:20px; padding-left:22px;">googlemini</option><option value="circle" style="background-image:url('/google_maps/icons/circle/red.png'); height:18px; padding-left:22px;">circle</option><option value="square" style="background-image:url('/google_maps/icons/square/red.png'); height:18px; padding-left:22px;">square</option><option value="triangle" style="background-image:url('/google_maps/icons/triangle/red.png'); height:18px; padding-left:22px;">triangle</option><option value="diamond" style="background-image:url('/google_maps/icons/diamond/red.png'); height:18px; padding-left:22px;">diamond</option><option value="cross" style="background-image:url('/google_maps/icons/cross/red.png'); height:18px; padding-left:22px;">cross</option><option value="star" style="background-image:url('/google_maps/icons/star/red.png'); height:18px; padding-left:22px;">star</option><option value="arrow" style="background-image:url('/google_maps/icons/arrow/red-r000.png'); height:18px; padding-left:22px;">arrow</option><option value="airport" style="background-image:url('/google_maps/icons/airport/red.png'); height:18px; padding-left:22px;">airport</option><option value="camera" style="background-image:url('/google_maps/icons/camera/red.png'); height:18px; padding-left:22px;">camera</option><option value="blankcircle" style="background-image:url('/google_maps/icons/blankcircle/red.png'); height:18px; padding-left:22px;">blankcircle (BIG)</option><option value="custom" style="height:18px; padding-left:22px;">custom icon</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_sym" onclick="HelpPopup('google_wpt_sym'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;<div id="example_icon_block" style="width:20px; height:24px; max-width:32px; max-height:32px; display:inline-block; vertical-align:middle; overflow:show; text-align:center;"><!-- --></div>
+		&nbsp;&nbsp;Color:&nbsp;<select class="normal" name="wpt_color" id="select:wpt_color" size="1" onchange="ChangeExampleIcon('select:google_wpt_sym','select:wpt_color','example_icon_block','input:wpt_sym_custom');"><option value="pink" style="border-left:12px solid pink; color:pink;">pink</option><option value="red" selected style="border-left:12px solid red; color:red;">red</option><option value="maroon" style="border-left:12px solid maroon; color:maroon;">maroon</option><option value="orange" style="border-left:12px solid orange; color:orange;">orange</option><option value="yellow" style="border-left:12px solid yellow; color:yellow;">yellow</option><option value="olive" style="border-left:12px solid olive; color:olive;">olive</option><option value="lime" style="border-left:12px solid lime; color:lime;">lime</option><option value="green" style="border-left:12px solid green; color:green;">green</option><option value="aqua" style="border-left:12px solid aqua; color:aqua;">aqua</option><option value="teal" style="border-left:12px solid teal; color:teal;">teal</option><option value="blue" style="border-left:12px solid blue; color:blue;">blue</option><option value="navy" style="border-left:12px solid navy; color:navy;">navy</option><option value="violet" style="border-left:12px solid violet; color:violet;">violet</option><option value="purple" style="border-left:12px solid purple; color:purple;">purple</option><option value="magenta" style="border-left:12px solid magenta; color:magenta;">magenta</option><option value="white" style="border-left:12px solid white; color:#cccccc;">white</option><option value="silver" style="border-left:12px solid silver; color:silver;">silver</option><option value="gray" style="border-left:12px solid gray; color:gray;">gray</option><option value="black" style="border-left:12px solid black; color:black;">black</option><option value="tan" style="border-left:12px solid tan; color:tan;">tan</option><option value="brown" style="border-left:12px solid brown; color:brown;">brown</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_color" onclick="HelpPopup('wpt_color'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="wpt_sym_custom_row" style="display:none;">
+	<td align="right" nowrap>&nbsp;</td>
+	<td align="left" nowrap>
+	Custom icon URL: <input type="text" size="30" name="wpt_sym_custom" id="input:wpt_sym_custom" value="" onchange="if(this.value!=''){ this.form.google_wpt_sym.value='custom'; ChangeExampleIcon('select:google_wpt_sym','select:wpt_color','example_icon_block','input:wpt_sym_custom'); }">
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="right" nowrap>Waypoint labels:</td>
+	<td nowrap>
+	<select class="normal" name="google_wpt_labels" size="1" onfocus="Show('google_wpt_label_colors_row');" onchange="if(this.value!='0'){Show('google_wpt_label_colors_row');this.form.trk_as_wpt_name.focus();}else{Hide('google_wpt_label_colors_row');}" onfocus="if(this.value!='0'){Show('google_wpt_label_colors_row');}"><option value="0" selected>Mouse-over "tooltips" only</option><option value="1">Names appear as permanent labels</option><option value="2">Permanent labels, on normal points AND trackpoints</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_labels" onclick="HelpPopup('google_wpt_labels'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="google_wpt_label_colors_row" style="display:none;">
+	<td></td>
+	<td nowrap colspan="2">
+	Label color:&nbsp;<select class="normal" name="google_wpt_label_text" id="select:google_wpt_label_text" size="1"><option value="pink" style="border-left:12px solid pink; color:pink;">pink</option><option value="red" style="border-left:12px solid red; color:red;">red</option><option value="maroon" style="border-left:12px solid maroon; color:maroon;">maroon</option><option value="orange" style="border-left:12px solid orange; color:orange;">orange</option><option value="yellow" style="border-left:12px solid yellow; color:yellow;">yellow</option><option value="olive" style="border-left:12px solid olive; color:olive;">olive</option><option value="lime" style="border-left:12px solid lime; color:lime;">lime</option><option value="green" style="border-left:12px solid green; color:green;">green</option><option value="aqua" style="border-left:12px solid aqua; color:aqua;">aqua</option><option value="teal" style="border-left:12px solid teal; color:teal;">teal</option><option value="blue" style="border-left:12px solid blue; color:blue;">blue</option><option value="navy" style="border-left:12px solid navy; color:navy;">navy</option><option value="violet" style="border-left:12px solid violet; color:violet;">violet</option><option value="purple" style="border-left:12px solid purple; color:purple;">purple</option><option value="magenta" style="border-left:12px solid magenta; color:magenta;">magenta</option><option value="white" selected style="border-left:12px solid white; color:#cccccc;">white</option><option value="silver" style="border-left:12px solid silver; color:silver;">silver</option><option value="gray" style="border-left:12px solid gray; color:gray;">gray</option><option value="#333333" style="border-left:12px solid #333333; color:#333333;">dark gray</option><option value="black" style="border-left:12px solid black; color:black;">black</option><option value="tan" style="border-left:12px solid tan; color:tan;">tan</option><option value="brown" style="border-left:12px solid brown; color:brown;">brown</option></select>
+		&nbsp;&nbsp;Background:&nbsp;<select class="normal" name="google_wpt_label_bg" id="select:google_wpt_label_bg" size="1"><option value="pink" style="border-left:12px solid pink; color:pink;">pink</option><option value="red" style="border-left:12px solid red; color:red;">red</option><option value="maroon" style="border-left:12px solid maroon; color:maroon;">maroon</option><option value="orange" style="border-left:12px solid orange; color:orange;">orange</option><option value="yellow" style="border-left:12px solid yellow; color:yellow;">yellow</option><option value="olive" style="border-left:12px solid olive; color:olive;">olive</option><option value="lime" style="border-left:12px solid lime; color:lime;">lime</option><option value="green" style="border-left:12px solid green; color:green;">green</option><option value="aqua" style="border-left:12px solid aqua; color:aqua;">aqua</option><option value="teal" style="border-left:12px solid teal; color:teal;">teal</option><option value="blue" style="border-left:12px solid blue; color:blue;">blue</option><option value="navy" style="border-left:12px solid navy; color:navy;">navy</option><option value="violet" style="border-left:12px solid violet; color:violet;">violet</option><option value="purple" style="border-left:12px solid purple; color:purple;">purple</option><option value="magenta" style="border-left:12px solid magenta; color:magenta;">magenta</option><option value="white" style="border-left:12px solid white; color:#cccccc;">white</option><option value="silver" style="border-left:12px solid silver; color:silver;">silver</option><option value="gray" style="border-left:12px solid gray; color:gray;">gray</option><option value="#333333" selected style="border-left:12px solid #333333; color:#333333;">dark gray</option><option value="black" style="border-left:12px solid black; color:black;">black</option><option value="tan" style="border-left:12px solid tan; color:tan;">tan</option><option value="brown" style="border-left:12px solid brown; color:brown;">brown</option></select>
+	</td>
+</tr>
+</table>
+
+<div id="advanced_waypoint_options" class="advanced_options_box" style="display:none;">
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td nowrap>
+	Opacity:&nbsp;<select class="normal" name="wpt_opacity" size=1><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_opacity" onclick="HelpPopup('wpt_opacity'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+		&nbsp;&nbsp;Scale:&nbsp;<input type="text" size="2" name="wpt_scale" value="1">
+		<a target="help" class="linktohelp" href="help.html#wpt_scale" onclick="HelpPopup('wpt_scale'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+		&nbsp;&nbsp;Shadows:&nbsp;<select class="normal" name="google_wpt_shadows" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_shadows" onclick="HelpPopup('google_wpt_shadows'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+		&nbsp;&nbsp;Vector:&nbsp;<select class="normal" name="google_wpt_vectors" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_vectors" onclick="HelpPopup('google_wpt_vectors'); return false;"><img src="/images/help.png" width=9 height=12 align="baseline" border=0 alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Preserve waypoint colors and symbols (e.g., from KML or Garmin):&nbsp;
+	<select class="normal" name="wpt_preserve_attr" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_preserve_attr" onclick="HelpPopup('wpt_preserve_attr'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Colorize waypoints using this field:
+	<select class="normal" name="wpt_colorize" size="1" onchange="if(this.value=='custom'){Show('wpt_colorize_custom_row');this.form.wpt_colorize_custom.focus();}" onfocus="if(this.value=='custom'){Show('wpt_colorize_custom_row');}"><option value="none" selected>None (don't colorize points)</option><option value="n">N / frequency</option><option value="altitude">Altitude/elevation</option><option value="speed">Speed</option><option value="course">Course/heading</option><option value="slope">Slope</option><option value="time">Time</option><option value="sat">Satellites</option><option value="hdop">HDOP</option><option value="snr">SNR</option><option value="hr">Heart rate</option><option value="name">Name (alphabetized)</option><option value="desc">Description (alphabetized)</option><option value="category">Category (alphabetized)</option><option value="sym">Symbol (alphabetized)</option><option value="custom">custom field</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_colorize" onclick="HelpPopup('wpt_colorize'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="wpt_colorize_custom_row" style="display:none;">
+	<td nowrap colspan="2">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	Custom colorization field: <input type="text" size="12" name="wpt_colorize_custom" value="" onchange="if(this.value!=''){this.form.wpt_colorize.value='custom';}">
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Synthesize name:&nbsp;
+	<input type="text" size="20" name="synthesize_name" value=""> (field names in {curly} brackets)
+		<a target="help" class="linktohelp" href="help.html#synthesize_desc" onclick="HelpPopup('synthesize_desc'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Synthesize description:&nbsp;
+	<input type="text" size="20" name="synthesize_desc" value=""> (fields in {curly} brackets)
+		<a target="help" class="linktohelp" href="help.html#synthesize_desc" onclick="HelpPopup('synthesize_desc'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Synthesize label:&nbsp;
+	<input type="text" size="20" name="synthesize_label" value=""> (fields in {curly} brackets)
+		<a target="help" class="linktohelp" href="help.html#synthesize_desc" onclick="HelpPopup('synthesize_desc'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Synthesize folders:&nbsp;
+	<input type="text" size="20" name="synthesize_folder" value="" onchange="if(this.value!=''&&this.form.wpt_list.value=='0'){this.form.wpt_list.value='name';}"> (fields in {curly} brackets)
+		<a target="help" class="linktohelp" href="help.html#synthesize_folder" onclick="HelpPopup('synthesize_folder'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td align="left" colspan="2" nowrap>Initial state of folders in marker list:
+		&nbsp;<select class="normal" name="marker_list_options:folders_collapsed" size="1"><option value="0" selected>Open</option><option value="1">Collapsed</option></select>
+		<a target="help" class="linktohelp" href="help.html#marker_list_options:folders_collapsed" onClick="HelpPopup('marker_list_options:folders_collapsed'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+</div>
+
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td align="right" nowrap>Generate list of markers:</td>
+	<td nowrap><select class="normal" name="wpt_list" size="1"><option value="0" selected>No</option><option value="name">names</option><option value="name_border">names, with dividers</option><option value="desc">names &amp; descriptions</option><option value="desc_border">names &amp; descriptions, w/ dividers</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_list" onclick="HelpPopup('wpt_list'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Width:&nbsp;<input type="text" size="3" maxlength="4" name="marker_list_options:width" value="160">px
+		<a target="help" class="linktohelp" href="help.html#wpt_list_width" onclick="HelpPopup('wpt_list_width'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+
+<div id="advanced_waypoint_options_2" class="advanced_options_box" style="display:none;">
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Interactively filter out-of-range points:&nbsp;
+	<select class="normal" name="google_wpt_filter" size="1" onchange="if(this.value=='1'){Show('waypoint_filter_list_options');}" onclick="if(this.value=='1'){Show('waypoint_filter_list_options');}"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_filter" onclick="HelpPopup('google_wpt_filter'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Max. # visible:&nbsp;<input type="text" size="3" maxlength="4" name="google_wpt_filter_limit" value="">
+		<a target="help" class="linktohelp" href="help.html#google_wpt_filter" onclick="HelpPopup('google_wpt_filter'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle" id="waypoint_filter_list_options" style="display:none;">
+	<td nowrap colspan="2">
+	Filter marker list:&nbsp;
+	<select class="normal" name="google_wpt_filter_list" size="1"><option value="1" selected>Yes</option><option value="0">No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_filter" onclick="HelpPopup('google_wpt_filter'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+		&nbsp;&nbsp;&nbsp;Sort list by distance from center:&nbsp;<select class="normal" name="google_wpt_filter_sort" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#google_wpt_filter" onclick="HelpPopup('google_wpt_filter'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Discard outliers:
+	<select class="normal" name="discard_outliers" size="1"><option value="0" selected>No, show all points</option><option value="0.5">discard if Z &gt; 0.5</option><option value="1">discard if Z &gt; 1</option><option value="2">discard if Z &gt; 2</option><option value="3">discard if Z &gt; 3</option><option value="4">discard if Z &gt; 4</option><option value="5">discard if Z &gt; 5</option></select>
+		<a target="help" class="linktohelp" href="help.html#discard_outliers" onclick="HelpPopup('discard_outliers'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Show only points whose 'name' matches this pattern:&nbsp;
+	<input type="text" size="18" name="wpt_name_filter" value="">
+		<a target="help" class="linktohelp" href="help.html#wpt_name_filter" onclick="HelpPopup('wpt_name_filter'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Garmin waypoint icons:&nbsp;
+	<select class="normal illustrated" name="garmin_icons" size="1"><option value="24x24" style="background-image:url('/google_maps/icons/garmin/24x24/Trail_Head.png'); height:26px; padding-left:26px;">large, new (24x24)</option><option value="gpsmap" selected style="background-image:url('/google_maps/icons/garmin/gpsmap/Trail_Head.png'); height:26px; padding-left:26px;">small, colorful (16x16)</option><option value="mapsource" style="background-image:url('/google_maps/icons/garmin/mapsource/Trail_Head.png'); height:26px; padding-left:26px;">small, plain (16x16)</option><option value="none" style="height:26px; padding-left:26px;">Do not use Garmin icons</option></select>
+		<a target="help" class="linktohelp" href="help.html#garmin_icons" onclick="HelpPopup('garmin_icons'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Add "driving directions" form to each point's info window:&nbsp;
+	<select class="normal" name="wpt_driving_directions" size="1"><option value="1">Yes</option><option value="0" selected>No</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_driving_directions" onclick="HelpPopup('wpt_driving_directions'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+<tr valign="middle">
+	<td nowrap colspan="2">
+	Geotag points with times but no positions:&nbsp;
+	<select class="normal" name="wpt_interpolate" size="1"><option value="0">No</option><option value="1" selected>Yes, interpolate points</option><option value="E">Yes, &amp; include earlier points</option><option value="L">Yes, &amp; include later points</option><option value="EL">Yes, &amp; include earlier+later</option></select>
+		<a target="help" class="linktohelp" href="help.html#wpt_interpolate" onclick="HelpPopup('wpt_interpolate'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	<br>Geotagging offset: <input type="text" size="3" maxlength="6" name="wpt_interpolate_offset" value=""> hours (positionless points vs. GPS data)
+		<a target="help" class="linktohelp" href="help.html#wpt_interpolate_offset" onclick="HelpPopup('wpt_interpolate_offset'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+	</td>
+</tr>
+</table>
+</div>
+
+<!--
+<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin-top:8px;">
+<tr><td colspan="2" class="gpsv_form_heading">
+Contact information
+</td></tr>
+<tr valign="middle">
+	<td align="right" nowrap>Your e-mail:</td>
+	<td nowrap>
+	<input type="text" size="40" name="email" value="(OPTIONAL)" onfocus="if(this.value=='(OPTIONAL)'){this.value=''};">
+	</td>
+</tr>
+<tr valign="top">
+	<td></td>
+	<td class="smallest">
+	This is for impromptu tech support, NOT a mailing list!
+	</td>
+</tr>
+</table>
+-->
+
+</div><div style="float:left;">
+
+
+<table cellspacing="0" cellpadding="2" border="0">
+<tr><td nowrap class="gpsv_form_heading">
+	Upload your GPS data files here:
+		<a target="help" class="linktohelp" href="help.html#upload" onclick="HelpPopup('upload'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+</td></tr>
+<tr><td class="smallest">(Total size cannot exceed 10 MB; .zip/.gz is supported)</td></tr>
+<tr><td>
+	<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr valign="middle"><td width="1%">File&nbsp;#1</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_1" name="uploaded_file_1"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_1');" title="reset the file input"></div></td></tr>
+		<tr valign="middle"><td width="1%">File&nbsp;#2</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_2" name="uploaded_file_2"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_2');" title="reset the file input"></div></td></tr>
+		<tr valign="middle"><td width="1%">File&nbsp;#3</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_3" name="uploaded_file_3"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_3');" title="reset the file input"></div></td></tr>
+	</table>
+</td></tr>
+<tr id="more_file_boxes" style="display:none;"><td>
+	<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr valign="middle"><td width="1%">File&nbsp;#4</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_4" name="uploaded_file_4"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_4');" title="reset the file input"></div></td></tr>
+		<tr valign="middle"><td width="1%">File&nbsp;#5</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_5" name="uploaded_file_5"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_5');" title="reset the file input"></div></td></tr>
+		<tr valign="middle"><td width="1%">File&nbsp;#6</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_6" name="uploaded_file_6"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_6');" title="reset the file input"></div></td></tr>
+		<tr valign="middle"><td width="1%">File&nbsp;#7</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_7" name="uploaded_file_7"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_7');" title="reset the file input"></div></td></tr>
+		<tr valign="middle"><td width="1%">File&nbsp;#8</td><td width="99%" style="width:250px; max-width:250px; overflow:hidden;"><input type="file" id="input:uploaded_file_8" name="uploaded_file_8"></td><td width="1%"><div class="delete_box" onclick="Reset_File_Input('input:uploaded_file_8');" title="reset the file input"></div></td></tr>
+	</table>
+</td></tr>
+<tr><td align="center">
+	<p><a href="javascript:void(0)" onclick="Toggle('more_file_boxes'); if(document.getElementById('more_file_boxes').style.display=='none'){this.innerHTML='Show additional file input boxes'}else{this.innerHTML='Hide additional file input boxes'}; return true;">Show additional file input boxes</a></p>
+</td></tr>
+
+<tr><td align="center" style="padding-top:8px; padding-bottom:16px;">
+	<input type="submit" name="submitted" value="Draw the map" class="gpsv_submit">
+	<span id="new_window_span"><input type="checkbox" checked name="new_window" id="new_window_checkbox" value="1" onclick="ChangeFormTarget(this.form)"><label for="new_window_checkbox">Open in new window</label></span>
+	<div style="display:block; margin:10px auto 0px auto; text-align:center; font-size:80%;">
+		<a href="javascript:void(0)" onclick="Save_Form_Settings('form_'+document.forms.main.format.value,'main');">Save these settings</a> &#149; <a href="javascript:void(0)" onclick="Load_Form_Settings('form_'+document.forms.main.format.value,'main');">Load from saved</a>
+	</div>
+</td></tr>
+
+<tr><td nowrap class="gpsv_form_heading">
+	Or paste your data here:
+	<a target="_blank" class="linktohelp" href="tutorials/waypoints.html"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a>
+</td></tr>
+<tr><td class="notranslate">
+	<textarea name="data" wrap="off" rows="5" style="width:99%" placeholder="name,desc,latitude,longitude"></textarea>
+</td></tr>
+<tr><td nowrap>
+	Force plain text to be this type: <select class="normal" name="force_type" size="1" id="force_type"><option value="" selected>default</option><option value="t">trackpoints</option><option value="r">route points</option><option value="w">waypoints</option></select>
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td nowrap class="gpsv_form_heading">
+	Or provide the URL of static data on the Web:
+	<!-- <a target="help" class="linktohelp" href="help.html#remote_data" onclick="HelpPopup('remote_data'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> -->
+</td></tr>
+<tr><td><input type="text" style="width:97%" id="remote_data_input"  name="remote_data" value="" onchange="if(this.value.match(/\bgoogle\.\w\w|\bgoo\.gl\/maps\//)){ Show('google_api_key_row'); if(this.form.google_api_key && !this.form.google_api_key.value){this.form.google_api_key.focus();} }"></td></tr>
+<tr><td nowrap class="gpsv_form_heading">
+	Or a URL that the map will load dynamically:
+	<!-- <a target="help" class="linktohelp" href="help.html#dynamic_data" onclick="HelpPopup('dynamic_data'); return false;"><img src="/images/help.png" width="9" height="12" align="baseline" border="0" alt="[help]"></a> -->
+</td></tr>
+<tr><td><input type="text" style="width:97%" name="dynamic_data" value="" onchange=""><span style="font-size:9px;"><br>(Google Docs spreadsheets or GPX/KML/XML files only)</span></td></tr>
+</table>
+
+
+</div>
+<br style="clear:both;" />
+
+<input type="hidden" name="add_timestamps" value="">
+<input type="hidden" name="area_include_mode" value="0">
+<input type="hidden" name="area_include_selector" value="">
+<input type="hidden" name="area_include" value="">
+<input type="hidden" name="forerunner_laps" value="1">
+<input type="hidden" name="form" value="html">
+<input type="hidden" name="frequency_count" value="none">
+<input type="hidden" name="gc_segments" value="60">
+<input type="hidden" name="google_language" value="">
+<input type="hidden" name="google_info_window_width" value="0">
+<input type="hidden" name="google_scroll_zoom" value="1">
+<input type="hidden" name="google_photo_size" value="">
+<input type="hidden" name="google_thumbnail_width" value="">
+<input type="hidden" name="gpx_speed_kph" value="">
+<input type="hidden" name="marker_list_options:center" value="0">
+<input type="hidden" name="marker_list_options:footer" value="">
+<input type="hidden" name="marker_list_options:header" value="">
+<input type="hidden" name="marker_list_options:height" value="">
+<input type="hidden" name="marker_list_options:include_tickmarks" value="0">
+<input type="hidden" name="marker_list_options:include_trackpoints" value="0">
+<input type="hidden" name="marker_list_options:info_window" value="1">
+<input type="hidden" name="marker_list_options:thumbnails" value="">
+<input type="hidden" name="marker_list_options:unnamed" value="[unnamed]">
+<input type="hidden" name="marker_list_options:url_links" value="0">
+<input type="hidden" name="marker_list_options:wrap_names" value="1">
+<input type="hidden" name="marker_list_options:zoom" value="0">
+<input type="hidden" name="osm_filter" value="highway;">
+<input type="hidden" name="radius_segments" value="120">
+<input type="hidden" name="sp_width" value="10 km">
+<input type="hidden" name="special" value="">
+<input type="hidden" name="trk_interpolation" value="">
+<input type="hidden" name="utm_output" value="0">
+<input type="hidden" name="wpt_clustering" value="">
+<input type="hidden" name="wpt_desc_filter" value="">
+<input type="hidden" name="wpt_desc" value="1">
+<input type="hidden" name="wpt_max_size" value="">
+<input type="hidden" name="wpt_min_size" value="">
+<input type="hidden" name="wpt_name" value="1">
+<input type="hidden" name="wpt_resize" value="">
+</form>
+<script type="text/javascript" src="/ip2country.js"></script>
+
+
+
+
+<br>
+
+<div id="footer" style="width:100%;">
+	<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top:1px solid #006600; padding-top:3px;"><tr valign="top"><td class="footer" align="left">
+		&copy;2003-2019 <a href="http://adamschneider.net/">Adam Schneider</a>,&nbsp;<img src="/images/email-11.png" align="absmiddle" alt="adam [&#97;&#116;] gpsvisualizer [dot] com" style="padding-right:2px;">.
+	</td><td class="footer" align="right">
+		<a href="/privacy.html">Privacy&nbsp;Policy</a>
+	</td></tr></table>
+</div>
+
+</td>
+</tr></table>
+
+</body>
+</html>
